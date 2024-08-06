@@ -1,0 +1,622 @@
+1.友人和敌人
+
+while True:
+    friend = hero.findNearestFriend()
+    if friend:
+        hero.say("To battle, " + friend.id + "!")
+    # 寻找最近的敌人，然后让他们滚蛋
+    enemy = hero.findNearestEnemy()
+    if enemy:
+        hero.say("Go away, " + enemy.id)
+2.德雅啤酒
+
+# <%= plus %>?
+# <%= concatenation %>?
+# X potions of health on the wall!?
+# X potions of health!?
+# Take Y down, pass it around!?
+# X-Y potions of health on the wall.?
+ 
+potionsOnTheWall = 10
+numToTakeDown = 1
+while True:
+    hero.say(potionsOnTheWall + " potions of health on the wall!")
+    # <%= song %>
+    hero.say(potionsOnTheWall + " potions of health!")
+    # <%= song %>
+    hero.say("Take " + numToTakeDown + " down, pass it around!")
+    potionsOnTheWall -= numToTakeDown
+    # <%= last %>
+    hero.say(potionsOnTheWall + " potions of health on the wall.")
+3.Reward  and Ruination
+
+while True:
+    enemy = hero.findNearestEnemy()
+    if enemy:
+        enemyPos = enemy.pos.x + " " + enemy.pos.y
+        hero.say("Enemy at " + enemyPos)
+        
+    # Now that you have sweet revenge,
+    # why not have your cake and eat it, too?
+    # Find the item's position and 
+    # say it for your artillery to target.
+    item = hero.findNearestItem()
+    if item:
+        itemPos = item.pos.x + " " + item.pos.y
+        hero.say("Item at " + itemPos)
+
+
+Concept Challenge. Air Rescue Service
+# To save a friend: say "Friend " followed by the friend's id property.?
+# To zap an enemy: say "Enemy " followed by the enemy's id property.?
+while True:
+    enemy = hero.findNearestEnemy()
+    if enemy:
+        hero.say("Enemy " + enemy.id)
+    friend = hero.findNearestFriend()
+    if friend:
+        hero.say("Friend " + friend.id)
+
+4. 巫师之门
+# <%= secret_number %>?
+hero.moveXY(30, 13)
+las = hero.findNearestFriend().getSecret()
+ 
+# <%= instr_erzsebet %>?
+# <%= move_erzsebet %>?
+erz = las + 7
+hero.moveXY(17, 26)
+hero.say(erz)
+ 
+# <%= instr_simonyi %>?
+# <%= move_simonyi %>?
+sim = erz / 4
+hero.moveXY(30, 39)
+hero.say(sim)
+ 
+# <%= instr_agata %>?
+# <%= move_agata %>?
+aga = sim * las
+hero.moveXY(43, 26)
+hero.say(aga)
+
+5. The Wizard's Haunt
+# <%= secret_number %>?
+hero.moveXY(18, 20)
+zso = hero.findNearestFriend().getSecret()
+ 
+# <%= instr_mihaly %>?
+# <%= move_mihaly %>?
+mih = zso / 4
+hero.moveXY(30, 15)
+hero.say(mih)
+ 
+# <%= instr_beata %>?
+# <%= move_beata %>?
+bea = mih / 5
+hero.moveXY(42, 20)
+hero.say(bea)
+ 
+# <%= instr_sandor %>?
+# <%= move_sandor %>?
+san = mih - bea
+hero.moveXY(38, 37)
+hero.say(san)
+
+6. The Wizard's Plane
+# Move to 'Eszter' and get the secret number from her.?
+hero.moveXY(16, 32)
+esz = hero.findNearestFriend().getSecret()
+ 
+# Multiply by 3 and subtract 2 to get 'Tamas's number.?
+# Remember to use parentheses to do calculations in the right order.?
+# Move to 'Tamas' and say his magic number.?
+tam = (esz * 3) - 2
+hero.moveXY(24, 28)
+hero.say(tam)
+ 
+# Subtract 1 and multiply by 4 to get 'Zsofi's number.?
+# Move to 'Zsofi' and say her magic number.?
+zso = (tam - 1) * 4
+hero.moveXY(32, 24)
+hero.say(zso)
+ 
+# Add 'Tamas's and 'Zsofi's numbers, then divide by 2 to get 'Istvan's number.?
+# Move to 'Istvan' and say his magic number.?
+ist = (tam + zso) / 2
+hero.moveXY(40, 20)
+hero.say(ist)
+ 
+# Add 'Tamas's and 'Zsofi's numbers. Subtract 'Istvan's number from 'Zsofi's. Multiply the two results to get 'Csilla's number.?
+# Move to 'Csilla' and say her magic number.?
+csi = (tam + zso) * (zso - ist)
+hero.moveXY(48, 16)
+hero.say(csi)
+
+Concept Challenge. True Alchemy
+# You are given the number of gold, silver and bronze coins.?
+# Save the result of each mathmatical operation into a variable, and say the result at each step.?
+wizard = hero.findNearestFriend()
+goldCoins = wizard.goldCoins
+silverCoins = wizard.silverCoins
+bronzeCoins = wizard.bronzeCoins
+# Add the number of gold and silver coins, then say the result.?
+sum = goldCoins + silverCoins
+hero.say(sum)
+# Subtract bronze coins from the previous result, then say the new result.?
+sub = sum - bronzeCoins
+hero.say(sub)
+# Divide the previous result by 3, then say the new result.?
+div = sub / 3
+hero.say(div)
+# Multiply the previous result by 2, then say the new result.?
+mult = div * 2
+hero.say(mult)
+
+7. 金币屑
+# <%= escape_room %>?
+ 
+while True:
+    # <%= find_item %>
+    item = hero.findNearestItem()
+    if item:
+        # <%= get_pos %>
+        itemPosition = item.pos
+        # <%= get_x_y %>
+        itemX = itemPosition.x
+        itemY = itemPosition.y
+        # <%= move_take %>
+        hero.moveXY(itemX, itemY)
+
+8. 白兔
+# 跟随发光石引导陷阱?
+ 
+while True:
+    item = hero.findNearestItem()
+    if item:
+        # 使用 item.pos 将物品位置保存为一个新的变数
+        position = item.pos
+        # 使用 pos.x 和 pos.y 保存坐标
+        x = position.x
+        y = position.y
+        # 使用 moveXY() 和 X 与 Y 变数移动至坐标
+        hero.moveXY(x, y)
+
+9. Chameleons
+# Ogres are disguised as coins or gems!?
+ 
+while True:
+    enemy = hero.findNearestEnemy()
+    # If you see an enemy - attack it:
+    if enemy:
+        hero.attack(enemy)
+    item = hero.findNearestItem()
+    # If you see a coin or a gem - move to it's X and Y position:
+    if item:
+        pos = item.pos
+        hero.moveXY(pos.x, pos.y)
+
+Concept Challenge. Rich and Safe
+# Find items and move to their position.?
+while True:
+    item = hero.findNearestItem()
+    if item:
+        hero.moveXY(item.pos.x, item.pos.y)
+
+Combo Challenge. Wind Correction
+# Say the x,y position of ogres as two numbers separated by a comma.?
+# For better accuracy, subtract 4 from the y position before saying it.?
+while True:
+    enemy = hero.findNearestEnemy()
+    if enemy:
+        y = enemy.pos.y - 4
+        hero.say(enemy.pos.x + "," + y)
+
+10. Backwoods Bombardier
+# The pos property is an object with x and y properties.?
+# pos.x is a number representing the horizontal position on the map?
+# pos.y is a number representing the vertical position on the map?
+ 
+while True:
+    enemy = hero.findNearestEnemy()
+    if enemy:
+        x = enemy.pos.x
+        y = enemy.pos.y
+        # say the x and y position separated by a comma
+        hero.say(x + "," + y)
+    else:
+        hero.say("Cease" + " " + "Fire!")
+
+11. 收集金币
+# 当你放好旗帜后点 提交。?
+# 点击提交后，旗帜按钮出现在左下角. ?
+while True:
+    flag = hero.findFlag()
+    if flag:
+        hero.pickUpFlag(flag)
+    else:
+        hero.say("为英雄放置一面旗帜来移动.")
+
+12. 金币草地
+# 收集每片草地的所有金币。?
+# 使用旗子在草地间移动。?
+# 当你准备好放置旗子时点击“提交”?
+ 
+while True:
+    flag = hero.findFlag()
+    if flag:
+        # 捡起旗子。
+        hero.pickUpFlag(flag)
+    else:
+        # 自动移动到你能看见的最近的物品。
+        item = hero.findNearestItem()
+        if item:
+            position = item.pos
+            x = position.x
+            y = position.y
+            hero.moveXY(x, y)
+
+13. 插旗子
+while True:
+    flag = hero.findFlag()
+    if flag:
+        # 我们该如何通过旗子的位置得到 flagX 和 flagY 呢？
+        # （向下看如何得到物品的 x 和 y）
+        flagPos = flag.pos
+        flagX = flagPos.x
+        flagY = flagPos.y
+ 
+        hero.buildXY("fire-trap", flagX, flagY)
+        hero.pickUpFlag(flag)
+    else:
+        item = hero.findNearestItem()
+        if item:
+            itemPos = item.pos
+            itemX = itemPos.x
+            itemY = itemPos.y
+            hero.moveXY(itemX, itemY)
+
+14. 小心陷阱
+while True:
+    flag = hero.findFlag()
+    enemy = hero.findNearestEnemy()
+    if flag:
+        # 去拔旗子。
+        hero.pickUpFlag(flag)
+        hero.say("我应该去把旗子拔起来。")
+    elif enemy:
+        # 仅当敌人的距离小于10米时才攻击。
+        if hero.distanceTo(enemy) < 10:
+            hero.attack(enemy)
+
+15. 通信尸体
+while True:
+    green = hero.findFlag("green")
+    black = hero.findFlag("black")
+    nearest = hero.findNearestEnemy()
+ 
+    if green:
+        hero.pickUpFlag(green)
+    elif black and hero.isReady("cleave"):
+        hero.pickUpFlag(black)
+        # 劈斩！
+        hero.cleave()
+    elif nearest and hero.distanceTo(nearest) < 10:
+        # 攻击！
+        hero.attack(nearest)
+
+16. 丰富的觅食
+while True:
+    flag = hero.findFlag()
+    enemy = hero.findNearestEnemy()
+    item = hero.findNearestItem()
+ 
+    if flag:
+        # 当我发现旗子的时候发生了什么？
+        hero.pickUpFlag(flag)
+    elif enemy:
+        # 当我找到敌人的时候发生了什么？
+        if hero.isReady("cleave"):
+            hero.cleave(enemy)
+        else:
+            hero.attack(enemy)
+    elif item:
+        # 当我找到一个物品的时候，发生了什么？
+        hero.moveXY(item.pos.x, item.pos.y)
+
+17. 咬手指的人
+if 2 + 2 == 4:
+    hero.say("嘿！")
+if 2 + 2 == 5:
+    hero.say("是的，你！")
+ 
+# 改变这里的条件让你的英雄说『来找我！』 来打我啊！?
+if 3 + 3 == 6:  # ? 让条件成立
+    hero.say("来打我啊！")
+ 
+if 20 == 20:  # ? 让条件成立
+    # 添加一句或者更多骂人的话来吸引食人魔，来点有创意的！
+    hero.say("我激怒你！")
+
+18. 濒危树林之战
+while True:
+    enemy = hero.findNearestEnemy()
+    
+    # 记住：别攻击树精『burl』
+    if enemy.type == "burl":
+        hero.say("I'm not attacking that Burl!")
+    
+    # type 属性告诉你它是什么种类的生物
+    if enemy.type == "munchkin":
+        hero.attack(enemy)
+    
+    # 使用『if』来攻击投掷者『thrower』
+    if enemy.type == "thrower":
+        hero.attack(enemy)
+        
+    # 如果它是一个食人魔『ogre』，跑到村口去！
+    if enemy.type == "ogre":
+        hero.moveXY(41, 47)
+
+Concept Challenge. Wrong Type
+while True:
+    enemy = hero.findNearestEnemy()
+    if enemy:
+        if enemy.type == "munchkin":
+            hero.attack(enemy)
+
+19. Burlbole Grove
+def shouldAttack(target):
+    # return False 如果没有`target`
+    if not target:
+        return False
+    # return False 如果target.type == "burl"
+    if target.type == "burl":
+        return False
+    # 除此之外 return True
+    return True
+ 
+while True:
+    enemy = hero.findNearestEnemy()
+    # 在这里，我们使用shouldAttack()来决定是否应该进行攻击！
+    # heroShouldAttack将被分配与shouldAttack() 返回的值相同的值！
+    heroShouldAttack = shouldAttack(enemy)
+    if heroShouldAttack:
+        hero.attack(enemy)
+
+20. 未知的距離
+def nearestEnemyDistance():
+    enemy = hero.findNearestEnemy()
+    result = 0
+    if enemy:
+        result = hero.distanceTo(enemy)
+    return result
+ 
+while True:
+    # 调用nearestEnemyDistance（）和
+    # 将结果保存在变量enemyDistance中。
+    enemyDistance = nearestEnemyDistance()
+    # 如果enemyDistance大于0：
+    if enemyDistance > 0:
+        # 说出enemyDistance变量的值。
+        hero.say(enemyDistance)
+
+21. 攻擊和凍住你的敵人
+22. 赚钱行家
+23. Agrippa Returned
+24. Metal Detector
+Concept Challenge. Ogre Invaders
+Combo Challenge. Forest Storm
+25. 穿越
+26. 有用的对手
+27. Wonderglade
+28. Cursed Wonderglade
+Concept Challenge. Wild Alliance
+29. 宝石或者死亡
+30. Burls 教你学 布尔
+31. 盐碱地
+32. 流星雨
+33. Forest Shadow
+Concept Challenge. Warders
+34. 春雷
+35. Teleport Lasso
+36. Brawler Hunt
+Concept Challenge. Helpful Hunting
+37. 平常的一天
+38. 逻辑之路
+39. 逻辑圈
+40. 逻辑结论
+Combo Challenge. Nonandor
+41. 强壮的沙牦牛
+42. 绿洲
+43. 萨文路
+Concept Challenge. Dried Irrigation
+44. Sarven 的距离
+45. 截擊
+46. 雷蹄
+Concept Challenge. Friendly Minefield
+47. Kithgard Enchanter
+48. 扫雷
+49. 操作 “杀鹿”
+50. 医疗注意
+Concept Challenge. Valley of the King
+Combo Challenge. Valley of a Thousand Rocks
+51. 跟上时间
+52. 沙漠核心
+53. 囤积黄金
+54. 诱饵钻
+Concept Challenge. Greed Protection
+55. 炼金术的传承
+Concept Challenge. Master Of Camouflage
+Combo Challenge. Escape to the Spring
+56. Chain of Command
+57. Pet Translator
+58. Alchemic Power
+# 等着炼金师的命令去拿药水。?
+ 
+# 宠物事件的事件处理程序 "hear"。?
+def onHear(event):
+    # 找到最近的药水。
+    potion = pet.findNearestByType("potion")
+    # 如果事件的消息是 "Fetch"
+    if event.message == "Fetch":
+        # 让宠物拿取药水。
+        pet.fetch(potion)
+    # 其他（对于任何其他消息）：
+    else:
+        # 将宠物归还红色标记。
+        pet.moveXY(54, 34)
+ 
+pet.on("hear", onHear)
+ 
+# 您不必更改下面的代码。?
+while True:
+    enemy = hero.findNearest(hero.findEnemies())
+    if enemy:
+        hero.attack(enemy)
+    else:
+        hero.moveXY(40, 34)
+
+59. Pet Engineer
+# 根据需要将宠物移到左或右按钮。?
+ 
+ 
+def onHear(event):
+    # 找到门卫
+    archer = pet.findNearestByType("archer")
+    soldier = pet.findNearestByType("soldier")
+    # 如果"event.speaker"参数是 `archer`：
+    if event.speaker == archer:
+        # 移动到左边的按钮。
+        pet.moveXY(32, 30)
+    # 如果"event.speaker"参数是`soldier`：
+    elif event.speaker == soldier:
+        # 移动到右边的按钮。
+        pet.moveXY(48, 30)
+ 
+ 
+pet.on("hear", onHear)
+ 
+ 
+# 您不必更改下面的代码。?
+# 你的英雄应该保护右下角的通道。?
+while True:
+    enemy = hero.findNearestEnemy()
+    if enemy:
+        hero.attack(enemy)
+
+
+60. Pet Adjutant
+# 你的宠物可以帮助你活下来，直到你可以逃脱。?
+ 
+def onHear(event):
+    # event.message包含所听到的文本。
+    # 如果有人说 "火"
+    if event.message == "火":
+        # 用PET.MOVEXY（）移动到底部的X标记
+        pet.moveXY(64, 16)
+        # 跟宠物说些什么。
+        pet.say("MEAW")
+    # 如果有人说 "愈合"
+    elif event.message == "愈合":
+        # 用pet.moveXY（）移动到顶部的X标记
+        pet.moveXY(64, 52)
+        # 跟宠物说些什么。
+        pet.say("MEAW")
+ 
+pet.on("hear", onHear)
+ 
+# 您不必更改下面的代码。?
+while True:
+    enemy = hero.findNearestEnemy()
+    if enemy:
+        # 如果敌人太强大。
+        if enemy.type == "brawler":
+            hero.say("火")
+        else:
+            hero.attack(enemy)
+    else:
+        # 如果你的英雄需要治疗。
+        if hero.health < hero.maxHealth / 2:
+            hero.say("愈合")
+
+Concept Challenge. Pet Explorer
+# Move to each button when you hear the explorer say its number.?
+# Only listen to the explorer, not the peasants!?
+explorer = hero.findNearestFriend()
+ 
+def onHear(event):
+    if event.speaker == explorer:
+        if event.message == "1":
+            pet.moveXY(8, 26)
+        elif event.message == "2":
+            pet.moveXY(26, 39)
+        elif event.message == "3":
+            pet.moveXY(26, 13)
+ 
+pet.on("hear", onHear)
+
+61. Dangerous Key
+# 听圣骑士的意见，取得正确的钥匙。?
+ 
+def onHear(event):
+    # 宠物可以找到圣骑士和钥匙。
+    paladin = pet.findNearestByType("paladin")
+    goldKey = pet.findNearestByType("gold-key")
+    silverKey = pet.findNearestByType("silver-key")
+    bronzeKey = pet.findNearestByType("bronze-key")
+    # 如果事件讲述者是圣骑士：
+    if event.speaker == paladin:
+        # 如果事件消息是“黄金”：
+        if event.message == "Gold":
+            # 宠物应该拿金钥匙。
+            pet.fetch(goldKey)
+        # 如果事件消息是“白银”：
+        elif event.message == "Silver":
+            # 宠物应该拿银钥匙。
+            pet.fetch(silverKey)
+        # 如果事件消息是“青铜”：
+        elif event.message == "Bronze":
+            # 宠物要取青铜钥匙。
+            pet.fetch(bronzeKey)
+ 
+pet.on("hear", onHear)
+
+62. Olympic Race
+# 宠物必须赢得比赛。?
+# 运动员应该碰到他们的队伍再跑回去。?
+ 
+def onHear(event):
+    referee = pet.findNearestByType("wizard")
+    # 如果裁判员是说话的人并且说的是"Start"：
+    if event.speaker == referee and event.message == "Start":
+        # 让宠物跑到红色标记。
+        pet.moveXY(53, 27)
+        # 然后跑回来。
+        pet.moveXY(6, 27)
+ 
+# 分配OnEnter函数来处理“"hear"事件。?
+pet.on("hear", onHear)
+
+63. Cross Bones
+# 欢迎来到十字骨头！?
+# 积累硬币来筹集合适的军队。?
+# 移动到X标记雇用部队。?
+# 花费20金召唤士兵。?
+# 花费25金召唤弓箭手。?
+# 如果你的英雄已经拥有超过了一定数量的黄金，请做点什么！?
+# 拿起药水来医治自己和监护者。?
+# 注意可能会出现某些事件的标志。?
+ 
+while True:
+    if hero.gold >= 90:
+        # 如果你的英雄已经拥有超过了一定数量的黄金，请做点什么！
+        hero.moveXY(58, 20)
+        hero.moveXY(58, 16)
+        hero.moveXY(58, 20)
+        hero.moveXY(58, 16)
+    else:
+        item = hero.findNearestItem()
+        if item and item.type is not "potion":
+            hero.moveXY(item.pos.x, item.pos.y)
+

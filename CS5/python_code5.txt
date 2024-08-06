@@ -1,0 +1,1123 @@
+1. 维他力量
+# 这关会教你怎么定义你自己的函数。?
+# 放在函数内的代码并不会立刻执行, 而是先保存好, 以备后用.?
+# 这个函数会让你的英雄收集最近的金币。?
+def pickUpNearestCoin():
+    items = hero.findItems()
+    nearestCoin = hero.findNearest(items)
+    if nearestCoin:
+        hero.move(nearestCoin.pos)
+ 
+# 这个函数会让你的英雄召唤一个士兵。?
+def summonSoldier():
+    # 在这里写下代码：当你有足够金币时召唤士兵
+    if hero.gold >= hero.costOf("soldier"):
+        hero.summon("soldier")
+ 
+# 这个函数会命令你的士兵攻击最近的敌人?
+def commandSoldiers():
+    for soldier in hero.findFriends():
+        enemy = soldier.findNearestEnemy()
+        if enemy:
+            hero.command(soldier, "attack", enemy)
+ 
+while True:
+    # 在你的循环里，你可以"调用"你在上面定义的函数
+    # 下面几行代码会让 "pickUpNearestCoin" 函数里的代码被执行。
+    pickUpNearestCoin()
+    # 在这里调用 summonSoldier
+    summonSoldier()
+    # 在这里调用 commandSoldiers
+    commandSoldiers()
+
+2. 双生花
+# 如果花匠受伤了,双生花会缩小！?
+ 
+def summonSoldiers():
+    if hero.gold >= hero.costOf("soldier"):
+        hero.summon("soldier")
+ 
+# 定义函数:commandSoldiers?
+def commandSoldiers():
+    for soldier in hero.findByType("soldier"):
+        enemy = soldier.findNearestEnemy()
+        if enemy:
+            hero.command(soldier, "attack", enemy)
+ 
+# 定义函数:pickUpNearestCoin?
+def pickUpNearestCoin():
+    coin = hero.findNearest(hero.findItems())
+    if coin:
+        hero.move(coin.pos)
+ 
+peasant = hero.findByType("peasant")[0]
+ 
+while True:
+    summonSoldiers()
+    commandSoldiers()
+    pickUpNearestCoin()
+
+3. 猎手和猎物
+# Ogres對你的馴鹿虎視眈眈!?
+# 當召喚士兵攻擊時，記得讓弓箭手保持在後方。?
+ 
+def pickUpCoin():
+    # 收集金幣
+    coin = hero.findNearest(hero.findItems())
+    if coin:
+        hero.move(coin.pos)
+ 
+def summonTroops():
+    # 如果有金幣，那就召喚士兵吧。
+    if hero.costOf('soldier') <= hero.gold:
+        hero.summon('soldier')
+    
+# 這個函式有一個主目，稱為 soldier?
+# 主目就像參數。?
+# 主目的值在被呼叫時會是固定的。?
+def commandSoldier(soldier):
+    # 士兵應該攻擊敵人。
+    enemy = soldier.findNearestEnemy()
+    if enemy:
+        hero.command(soldier, "attack", enemy)
+ 
+# 寫一條命令弓箭手的函式來告訴弓箭手做什麼!?
+# 當被呼叫時，應該要有一個主目傳達給弓箭手，讓他跳至這個函式。?
+# 弓箭手只能攻擊25公尺內的敵人，否則不會動作。?
+def commandArcher(archer):
+    enemy = archer.findNearestEnemy()
+    if enemy and archer.distanceTo(enemy) < 25:
+        hero.command(archer, "attack", enemy)
+    else:
+        hero.command(archer, "move", archer.pos)
+ 
+while True:
+    pickUpCoin()
+    summonTroops()
+    friends = hero.findFriends()
+    for friend in friends:
+        if friend.type == "soldier":
+            # 這個盟友會被分配到在"士兵命令"裡參數指定的士兵中。
+            commandSoldier(friend)
+        elif friend.type == "archer":
+            # 確定你有命令你的弓箭手
+            commandArcher(friend)
+
+4. 收割火焰
+# 目标是生存30秒，并且保持地雷完好至少30秒。?
+ 
+def chooseStrategy():
+    enemies = hero.findEnemies()
+    # 如果你可以召唤一个格里芬骑士，返回 "griffin-rider"
+    if hero.gold >= hero.costOf("griffin-rider"):
+        return "griffin-rider"
+    # 
+    fangriders = hero.findByType("fangrider")
+    for i in range(len(fangriders)):
+        fangrider = fangriders[i]
+        if fangrider.pos.x < 38:
+            return "fight-back"
+    # 否则，返回 "collect-coins"
+    return "collect-coins"
+ 
+def commandAttack():
+    # 命令你的狮鹫骑士攻击食人魔。
+    friends = hero.findFriends()
+    enemies = hero.findEnemies()
+    for i in range(len(friends)):
+        friend = friends[i]
+        enemy = friend.findNearest(enemies)
+        if enemy:
+            hero.command(friend, "attack", enemy)
+    
+def pickUpCoin():
+    # 收集硬币
+    coin = hero.findNearest(hero.findItems())
+    if coin:
+        hero.move(coin.pos)
+    
+def heroAttack():
+    # 你的英雄应该攻击对方的骑士，跨过雷区的那些。
+    enemy = hero.findNearest(hero.findByType("fangrider"))
+    if enemy and hero.distanceTo(enemy) < 15:
+        hero.attack(enemy)
+    
+while True:
+    commandAttack()
+    strategy = chooseStrategy()
+    # 调用一个函数，取决于目前决定要做什么。
+    if strategy is "griffin-rider":
+        hero.summon("griffin-rider")
+    elif strategy is "fight-back":
+        heroAttack()
+    elif strategy is "collect-coins":
+        pickUpCoin()
+
+5. 劳心劳力
+# 食人魔巫师为您准备了一坨惊喜。?
+ 
+# 定义一个 chooseTarget 函数，让它接受friend 参数输入?
+# 返回要攻击的目标，根据士兵的类型。?
+# 士兵应该攻击巫师，弓箭手应该攻击最近的敌人。?
+def chooseTarget(friend):
+    target = None
+    if friend.type == "archer":
+        enemies = hero.findEnemies()
+        target = friend.findNearest(enemies)
+    if friend.type == "soldier":
+        witches = hero.findByType("witch")
+        target = friend.findNearest(witches)
+    return target
+ 
+while True:
+    friends = hero.findFriends()
+    for friend in friends:
+        # 用你的 chooseTarget 函数决定要攻击什么。
+        enemy = chooseTarget(friend)
+        if enemy:
+            hero.command(friend, "attack", enemy)
+
+6. 联合做战
+# 练习用取模从数组中循环取值?
+ 
+# 在数组array中编排好兵种组合?
+summonTypes = ["soldier", "archer"]
+ 
+def summonTroops():
+    # 用%取模来循环预设的征兵方案 len(self.built)    
+    type = summonTypes[len(hero.built) % len(summonTypes)]
+    if(hero.costOf(type) <= hero.gold):
+        hero.summon(type)
+        
+def gatherCoins():
+    items = hero.findItems()
+    item = hero.findNearest(items)
+    if item:
+        hero.move(item.pos)
+ 
+def commandTroops():
+    friends = hero.findFriends()
+    for i in range(len(friends)):
+        friend = friends[i]
+        enemy = friend.findNearestEnemy()
+        if enemy:
+            hero.command(friend, "attack", enemy)
+ 
+while True:
+    summonTroops()
+    gatherCoins()
+    commandTroops()
+
+7. Steelclaw Gap
+# This level introduces the % operator, also known as the modulo operator.?
+# a % b returns the remainder of a divided by b?
+# This can be used to wrap around to the beginning of an array when an index might be greater than the length?
+ 
+defendPoints = [{"x": 35, "y": 63},{"x": 61, "y": 63},{"x": 32, "y": 26},{"x": 64, "y": 26}]
+ 
+summonTypes = ["soldier","soldier","soldier","soldier","archer","archer","archer","archer"]
+ 
+# You start with 360 gold to build a mixture of soldiers and archers.?
+# self.built is an array of the troops you have built, ever.?
+# Here we use "len(self.built) % len(summonTypes)" to wrap around the summonTypes array?
+ 
+def summonTroops():
+    type = summonTypes[len(hero.built) % len(summonTypes)]
+    if hero.gold >= hero.costOf(type):
+        hero.summon(type)
+ 
+def commandTroops():
+    friends = hero.findFriends()
+    for i in range(len(friends)):
+        friend = friends[i]
+        # Use % to wrap around defendPoints based on friendIndex
+        point = defendPoints[i % len(defendPoints)]
+        # Command your minion to defend the defendPoint
+        hero.command(friend, "defend", point)
+ 
+while True:
+    summonTroops()
+    commandTroops()
+
+8. 戒指运送人
+# <%= intro %>?
+# <%= intro2 %>?
+# <%= circle %>?
+# <%= help %>?
+ 
+# <%= soldier_offset %>?
+# <%= arg1 %>?
+# <%= arg2 %>?
+def findSoldierOffset(soldiers, i):
+    soldier = soldiers[i]
+    angle = i * 360 / len(soldiers)
+    return radialToCartesian(5, angle)
+ 
+# <%= radial %>?
+def radialToCartesian(radius, degrees):
+    radians = Math.PI / 180 * degrees
+    xOffset = radius * Math.cos(radians)
+    yOffset = radius * Math.sin(radians)
+    return {"x": xOffset, "y": yOffset}
+ 
+peasant = hero.findByType("peasant")[0]
+ 
+# <%= find_soldiers %>?
+soldiers = hero.findByType("soldier")
+while True:
+    # <%= loop_soldiers_py %>
+    for i in range(len(soldiers)):
+        # <%= find_offset %>
+        offset = findSoldierOffset(soldiers,i)
+        # <%= add_offset %>
+        x = peasant.pos.x + offset.x
+        y = peasant.pos.y + offset.y
+        moveTo = {"x": x, "y": y }
+        # <%= command %>
+        hero.command(soldiers[i], "move", moveTo)
+ 
+    # <%= hero %>
+    hero.move({"x": hero.pos.x + 0.2, "y": hero.pos.y})
+
+9. Library Tactician
+# Hushbaum has been ambushed by ogres!?
+# She is busy healing her soldiers, you should command them to fight!?
+# The ogres will send more troops if they think they can get to Hushbaum or your archers, so keep them inside the circle!?
+ 
+# Soldiers spread out in a circle and defend.?
+def commandSoldier(soldier, soldierIndex, numSoldiers):
+    angle = Math.PI * 2 * soldierIndex / numSoldiers
+    defendPos = {"x": 41, "y": 40}
+    defendPos.x += 10 * Math.cos(angle)
+    defendPos.y += 10 * Math.sin(angle)
+    hero.command(soldier, "defend", defendPos);
+ 
+# Find the strongest target (most health)?
+# This function returns something! When you call the function, you will get some value back.?
+def findStrongestTarget():
+    mostHealth = 0
+    bestTarget = None
+    enemies = hero.findEnemies()
+    # Figure out which enemy has the most health, and set bestTarget to be that enemy.
+    for i in range(len(enemies)):
+        enemy = enemies[i]
+        if enemy.health > mostHealth:
+            bestTarget = enemy
+            mostHealth = enemy.health
+    # Only focus archers' fire if there is a big ogre.
+    if bestTarget and bestTarget.health > 15:
+        return bestTarget
+    else:
+        return None
+ 
+# If the strongestTarget has more than 15 health, attack that target. Otherwise, attack the nearest target.?
+def commandArcher(archer):
+    nearest = archer.findNearestEnemy()
+    if archerTarget:
+        hero.command(archer, "attack", archerTarget)
+    elif nearest:
+        hero.command(archer, "attack", nearest)
+ 
+archerTarget = None
+ 
+while True:
+    # If archerTarget is defeated or doesn't exist, find a new one.
+    if not archerTarget or archerTarget.health <= 0:
+        # Set archerTarget to be the target that is returned by findStrongestTarget()
+        archerTarget = findStrongestTarget()
+ 
+    friends = hero.findFriends()
+    soldiers = hero.findByType("soldier")
+    # Create a variable containing your archers.
+    archers = hero.findByType("archer")
+    
+    for i in range(len(soldiers)):
+        soldier = soldiers[i]
+        commandSoldier(soldier, i, len(soldiers));
+ 
+    # use commandArcher() to command your archers
+    for i in range(len(archers)):
+        archer = archers[i]
+        commandArcher(archer)
+
+10. The Geometry of Flowers
+# You now have the Ring of Flowers! You can do:?
+# toggleFlowers(True/False) - turns flowers on or off.?
+# setFlowerColor("random") - can also be "pink", "red", "blue", "purple", "yellow", or "white".?
+ 
+# Here are some functions for drawing shapes:?
+# x, y - center of the shape?
+# size - size of the shape (radius, side length)?
+def drawCircle(x, y, size):
+    angle = 0
+    hero.toggleFlowers(False)
+    while angle <= Math.PI * 2:
+        newX = x + (size * Math.cos(angle))
+        newY = y + (size * Math.sin(angle))
+        hero.moveXY(newX, newY)
+        hero.toggleFlowers(True)
+        angle += 0.2
+ 
+def drawSquare(x, y, size):
+    hero.toggleFlowers(False)
+    cornerOffset = size / 2
+    hero.moveXY(x - cornerOffset, y - cornerOffset)
+    hero.toggleFlowers(True)
+    hero.moveXY(x + cornerOffset, y - cornerOffset)
+    hero.moveXY(x + cornerOffset, y + cornerOffset)
+    hero.moveXY(x - cornerOffset, y + cornerOffset)
+    hero.moveXY(x - cornerOffset, y - cornerOffset)
+ 
+ 
+redX = {"x": 28, "y": 36}
+whiteX = {"x": 44, "y": 36}
+ 
+# Pick a color.?
+hero.setFlowerColor("red")
+ 
+# Draw a size 10 circle at the redX.?
+drawCircle(redX.x, redX.y, 10)
+ 
+# Change the color!?
+hero.setFlowerColor("purple")
+ 
+# Draw a size 10 square at the whiteX.?
+drawSquare(whiteX.x, whiteX.y, 10)
+ 
+# Now experiment with drawing whatever you want!?
+
+11. The Spy Among Us
+# The inner gate can hold for a long time.?
+# However, one of these peasants is an OGRE SPY!?
+# There is a hint! The spy's name has the letter "z"?
+ 
+# This function checks for a specific letter in a word.?
+# A string is just an array! Loop over it like an array?
+def letterInWord(word, letter):
+    for i in range(len(word)):
+        character = word[i]
+        # If character is equal to letter, return True
+        if character == letter:
+            return True
+    # The letter isn't in the word, so return False
+    return False
+ 
+ 
+spyLetter = "z"
+friends = hero.findFriends()
+ 
+for friend in friends:
+    friendName = friend.id
+    if letterInWord(friendName, spyLetter):
+        # Reveal the spy!
+        hero.say(friendName + " is a spy!")
+    else:
+        hero.say(friendName + " is a friend.")
+
+12. 以我的名义
+# <%= choose_chest %>?
+# <%= use_name %>?
+# <%= chest_is_letter %>?
+ 
+ 
+# <%= function_index_letter %>?
+def letterIndex(word, letter):
+    # <%= step_word_indexes %>
+    for i in range(len(word)):
+        char = word[i]
+        # <%= return_index_if_true %>
+        if char == letter:
+            # <%= return_index %>
+            return i
+    # <%= if_nothing %>
+    return 0
+ 
+ogreLetter = "z"
+shaman = hero.findByType("thoktar")[0]
+ 
+# <%= find_index_and_use %>?
+chestIndex = letterIndex(shaman.id, ogreLetter)
+hero.moveXY(16 + chestIndex * 8, 36)
+
+13. Highlanders
+# You must defeat the ogres?
+# But they are using black magic!?
+# Only the highlander soldiers are immune.?
+# Find highlanders, their names always contain "mac"?
+ 
+highlanderName = "mac"
+ 
+# This function should search for a string inside of a word:?
+def wordInString(string, word):
+    lenString = len(string)
+    lenWord = len(word)
+    # Step through indexes (i) from 0 to (lenString - lenWord)
+    for i in range(0, lenString - lenWord):
+        # For each of them through indexes (j) of the word length
+        for j in range(lenWord):
+            # If [i + j]th letter of the string is not equal [j]th letter of world, then break loop
+            if string[i+j] != word[j]:
+                break
+            # if [j]th is the last letter of the word (j == lenWord - 1), then return True.
+            elif j == lenWord - 1:
+                return True
+    # If loops are ended then the word is not inside the string. Return False.
+    return False
+ 
+# Look at your soldiers and choose highlanders only?
+soldiers = hero.findFriends()
+for soldier in soldiers:
+    if wordInString(soldier.id, highlanderName):
+        hero.say(soldier.id + " be ready.")
+        
+# ?
+hero.say("ATTACK!!!")
+
+14. Perimeter Defense
+# We need to build guard towers around the village.?
+# Each peasant can build one tower.?
+# Show them the place to build.?
+# These towers are automatic and will attack ALL units outside the town.?
+ 
+# First move along the north border (y=60) from x=40 to x=80 with the step 20.?
+# `range` doesn't include the second edge.?
+for x in range(40, 81, 20):
+    # Move at each point and say anything.
+    hero.moveXY(x, 60)
+    hero.say("Here")
+# Next move along the east border (x=80) from y=40 to y=20 with the negative step -20.?
+for y in range(40, 19, -20):
+    hero.moveXY(80, y)
+    hero.say("Here")
+# Continue for the two remaining borders.?
+# Next the south border (y=20) from x=60 to x=20 with the negative step -20.?
+for x in range(60, 19, -20):
+    hero.moveXY(x, 20)
+    hero.say("Here")
+# Next the west border (x=20) from y=40 to y=60 with the step 20.?
+for y in range(40, 61, 20):
+    hero.moveXY(20, y)
+    hero.say("Here")
+ 
+# Don't forget hide inside the village.?
+hero.moveXY(50, 40)
+
+15. Dangerous Tracks
+# Protect the village with fire traps.?
+# Mine all passages in four directions.?
+# You have 80 seconds before the ogres attack.?
+ 
+# Build traps on the line y=114 from x=40 to x=112 with step=24.?
+def buildNorthLine():
+    for x in range(40, 113, 24):
+        hero.buildXY("fire-trap", x, 114)
+ 
+# Build traps on the line x=140 from y=110 to y=38 with step=18.?
+def buildEastLine():
+    # Complete this function:
+    for y in range(110, 37, -18):
+        hero.buildXY("fire-trap", 140, y)
+ 
+# Build traps on the line y=22 from x=132 to x=32 with step=20.?
+def buildSouthLine():
+    # Complete this function:
+    for x in range(132, 31, -20):
+        hero.buildXY("fire-trap", x, 22)
+ 
+# Build traps on the line x=20 from y=28 to y=108 with step=16.?
+def buildWestLine():
+    # Complete this function:
+    for y in range(28, 109, 16):
+        hero.buildXY("fire-trap", 20, y)
+ 
+buildNorthLine();
+buildEastLine();
+buildSouthLine();
+buildWestLine();
+hero.moveXY(40, 94);
+
+16. Resource Valleys
+# Collect all the coins!?
+# The peasants are unable to get the coins from other areas?
+# However, each area only spawns a certain value of coin!?
+# Filter through all the items and command the peasants accordingly.?
+ 
+ 
+def commandPeasant(peasant, coins):
+    # Command the peasant to the nearest of their array
+    coin = peasant.findNearest(coins)
+    if coin:
+        hero.command(peasant, "move", coin.pos)
+ 
+ 
+friends = hero.findFriends()
+peasants = {
+    "Aurum": friends[0],
+    "Argentum": friends[1],
+    "Cuprum": friends[2]
+}
+ 
+ 
+while True:
+    items = hero.findItems()
+    goldCoins = []
+    silverCoins = []
+    bronzeCoins = []
+    for item in items:
+        if item.value == 3:
+            goldCoins.append(item)
+        # Put bronze and silver coins in their approriate array:
+        elif item.value == 2:
+            silverCoins.append(item)
+        elif item.value == 1:
+            bronzeCoins.append(item)
+    
+    commandPeasant(peasants.Aurum, goldCoins)
+    commandPeasant(peasants.Argentum, silverCoins)
+    commandPeasant(peasants.Cuprum, bronzeCoins)
+
+17. Flawless Pairs
+# Collect 4 pairs of gems.?
+# Each pair must contain equal valued gems.?
+ 
+# This function returns two items with the same value.?
+def findValuePair(items):
+    # Check each possible pair in the array.
+    # Iterate indexes 'i' from 0 to the last one.
+    for i in range(len(items)):
+        itemI = items[i]
+        # Iterate indexes 'j' from 0 to the last.
+        for j in range(len(items)):
+            # If it's the same element, then skip it.
+            if i == j:
+                continue
+            itemJ = items[j]
+            # If we found a pair with two equal gems, then return them.
+            if items[i].value == items[j].value:
+                return [items[i], items[j]]
+    # Return an empty array if no pair exists.
+    return None
+ 
+while True:
+    gems = hero.findItems()
+    gemPair = findValuePair(gems)
+    # If the gemPair exists, collect the gems!
+    if gemPair:
+        gemA = gemPair[0]
+        gemB = gemPair[1]
+        # Move to the first gem.
+        hero.moveXY(gemA.pos.x, gemA.pos.y)
+        # Return to get the haste from the wizard.
+        hero.moveXY(40, 44)
+        # Then move to the second gem.
+        hero.moveXY(gemB.pos.x, gemB.pos.y)
+        # Return to get the haste from the wizard.
+        hero.moveXY(40, 44)
+
+18. Twins Power
+# There are four pairs of twins, they should pray by pairs.?
+# You need to find twins and call them.?
+ 
+# Twins have the same names, only the last letter is different.?
+# This function checks if the pair of units are twins.?
+def areTwins(unit1, unit2):
+    name1 = unit1.id
+    name2 = unit2.id
+    if name1.length != name2.length:
+        return False
+    for i in range(name1.length - 1):
+        if name1[i] != name2[i]:
+            return False
+    return True
+ 
+# Iterate over all pairs of paladins and?
+#  say() their name by pairs if they are twins.?
+friends = hero.findFriends()
+for f1 in range(friends.length):
+    for f2 in range(friends.length):
+        if f1 != f2 and areTwins(friends[f1], friends[f2]):
+            hero.say(friends[f1].id + " " + friends[f2].id)
+ 
+# When twins are in their spots, lure the ogre.?
+# Don't be afraid of beams - they are dangerous only for ogres.?
+hero.moveXY(64, 36)
+hero.moveXY(14, 36)
+
+19. Think Ahead
+# You need to distract "Big Bertha" until you special squad arrives.?
+# The cannon shoots at the pair of soldiers closest to each other.?
+ 
+# This function finds the pair of units?
+# with the minimum distance between them.?
+def findNearestPair(units):
+    minDistance = 9001
+    nearestPair = ["Nobody", "Nobody"]
+    # You need to check and compare all pairs of units.
+    # Iterate all units with indexes "i" from 0 to "len(units)".
+    for i in range(len(units)):
+        # Iterate all units again with indexes "j".
+        for j in range(len(units)):    
+            # If "i" is equal to "j", then skip (continue).
+            if i == j:
+                continue
+            # Find the distance between the i-th and j-th units.
+            distance = units[i].distanceTo(units[j])
+            # If the distance less than 'minDistance':
+            if (distance < minDistance):
+                # Reassign 'minDistance' with the new distance.
+                minDistance = distance
+                # Reassign 'nearestPair' to the names
+                # of the current pair of units.
+                nearestPair = [units[i], units[j]]
+    return nearestPair
+ 
+ 
+while True:
+    soldiers = hero.findByType("soldier")
+    # We know when the cannon shoots.
+    if hero.time % 8 == 5:
+        # Find which pair of soldiers in danger and protect them.
+        pairOfNames = findNearestPair(soldiers)
+        # Say the soldier's names and wizards will protect them.
+        hero.say(pairOfNames[0] + " " + pairOfNames[1])
+
+20. Grid Search
+# The treasure somewhere between trees.?
+# The coordinates are 'x: ?0, y: ?0'. ?
+# Move at all potential points and show to peasants where to dig.?
+ 
+leftBorder = 20
+rightBorder = 61
+bottomBorder = 20
+topBorder = 51
+step = 10
+ 
+# Iterate X coordinates from the left to right border with step 10.?
+for x in range(leftBorder, rightBorder, step):
+    # Use a nested loop to iterate through Y coordinates for each X.
+    # Iterate y coordinates from the bottom to top border with step 10.
+    for y in range(bottomBorder, topBorder, step):
+        # Move to the point with coordinates X, Y and say anything.
+        hero.moveXY(x, y)
+        hero.say("Try here!")
+ 
+# Allow peasants to check the last point.?
+hero.moveXY(20, 10)
+
+21. Grid Minefield
+# The ogre formation is marching at the village.?
+# We have 90 seconds to build a minefield.?
+# We'll use their strict formation against them.?
+ 
+# Use nested loops to build the grid minefield.?
+# First iterate x coordinates from 12 to 60 with step 8.?
+for x in range(12, 12 + 8 * 6, 8):
+    # For each x iterate y cordinates from 12 to 68 with step 8.
+    for y in range(12, 12 + 8 * 7, 8):
+        # For each point build "fire-trap" there.
+        hero.buildXY("fire-trap", x, y)
+    # After each column, it's better to move right to avoid own traps.
+    hero.moveXY(hero.pos.x + 8, hero.pos.y)
+ 
+# Now wait and watch the coming ogres.?
+# <= near_blow %>?
+# Just move at the nearest mine when it's the time.?
+while True:
+    nearest = hero.findNearest(hero.findEnemies())
+    if nearest and hero.distanceTo(nearest) < 20:
+        hero.moveXY(52, 53)
+        break
+
+22. To Arms!
+# Ogres are going to attack soon.?
+# Move near each of tents (to the X marks)?
+# say() something at each X to wake your soldiers.?
+# Beware: leave the camp when the battle begins!?
+# Ogres will send reinforcements if they see the hero.?
+ 
+# The sergeant knows the distance between tents.?
+sergeant =  hero.findNearest(hero.findFriends())
+ 
+# The distances between the X marks.?
+stepX = sergeant.tentDistanceX
+stepY = sergeant.tentDistanceY
+# The number of tents.?
+tentsInRow = 5
+tentsInColumn = 4
+ 
+# The first tent mark has constant coordinates.?
+firstX = 10
+firstY = 14
+ 
+# Use nested loops and visit all 20 tents.?
+# IMPORTANT: move row by row - it's faster.?
+for y in range(firstY, firstY + stepY * 4, stepY):
+    for x in range(firstX, firstX + stepX * 5, stepX):
+        # Move at the marks near tents and say anything.
+        hero.moveXY(x, y)
+        hero.say("Wake UP!")
+ 
+# Now watch the battle.?
+
+23. Power Points
+# You need to find and destroy 3 skeletons.?
+# Skeletons and items are summoned at points of power.?
+# Move to a point and say the spell: "VENI".?
+# To find the required points, use the wizard's map.?
+# 0s are bad points. Positive numbers are good.?
+ 
+spell = "VENI"
+# The map of points is a 2D array of numbers.?
+wizard = hero.findNearest(hero.findFriends())
+powerMap = wizard.powerMap
+ 
+# This function converts grid into x-y coordinates.?
+def convert(row, col):
+    return {'x': 16 + col * 12, 'y': 16 + row * 12}
+ 
+# Loop through the powerMap to find positive numbers.?
+# First, loop through indexes of rows.?
+for i in range(len(powerMap)):
+    # Each row is an array. Iterate through it.
+    for j in range(len(powerMap[i])):
+        # Get the value of the i row and j column.
+        pointValue = powerMap[i][j]
+        # If it's a positive number:
+        if powerMap[i][j] > 0:
+            # Use convert to get XY coordinates.
+            coor = convert(i, j)
+            # Move there, say "VENI" and be prepared!
+            hero.moveXY(coor['x'], coor['y'])
+            hero.say("veni")
+            enemy = hero.findNearest(hero.findEnemies())
+            while enemy and enemy.health > 0:
+                hero.attack(enemy)
+            item = hero.findNearest(hero.findItems())
+            if item:
+                hero.moveXY(item.pos.x, item.pos.y)
+
+24. Danger Valley
+# Ogres have taken some peasants hostage!?
+# The scouts have given you intel for an ambush.?
+# this.grid holds an array of arrays.?
+# Inside the sub-arrays, 0 is a peasant, 1 is an ogre.?
+# Use this information to setup fire-traps.?
+ 
+# Remember the containing array is just an array!?
+# Iterate over all the elements of this array.?
+for i in range(len(hero.grid)):
+    row = hero.grid[i]
+    # Now, row is just another array!
+    # Iterate over all the tiles in this array:
+    for j in range(len(row)):
+        # Check if the tile at i, j is 1 to build:
+        tile = row[j]
+        if tile is 1:
+            hero.buildXY("fire-trap", 36 + 6 * j, 20 + 6 * i)
+        
+# Finally, retreat back to cover.?
+hero.moveXY(29, 55)
+
+25. Sleepwalkers
+# Our sleepwalking peasants are returning.?
+# But sleeping yetis are also coming.?
+# DON'T WAKE THEM UP!?
+# Build fences to let peasants through and stop yetis.?
+ 
+ 
+# Senick's prepared the grid map how to build fences.?
+hunter = hero.findNearest(hero.findFriends())
+fenceMap = hunter.getMap()
+ 
+# This function converts grid into XY coordinates.?
+def convertCoor(row, col):
+    return {'x': 34 + col * 4, 'y': 26 + row * 4}
+ 
+ 
+# Iterate over fenceMap and build at fence at all 1s.?
+for i in range(len(fenceMap)):
+    for j in range(len(fenceMap[i])):
+        if fenceMap[i][j]:
+            pos = convertCoor(i, j)
+            hero.moveXY(pos['x'], pos['y'])
+            hero.buildXY("fence", pos['x'], pos['y'])
+ 
+# Move back to the village after building the fences.?
+hero.moveXY(29, 17)
+
+26. Cannon Landing Force
+# We should send soldiers to defend the village.?
+# Also we need clear out old fire traps.?
+# For both of those goals we'll use the artillery!?
+# The artillery can launch soldiers and anti-traps.?
+ 
+# The scout prepared a map of the landing zone.?
+# The map is a 2D array where cells are strings.?
+landingMap = hero.findNearest(hero.findFriends()).landingMap
+ 
+# Tell the cannons the row, column, and target type.?
+# To get the element, use array[i][j]?
+# First, let's look at row 0 and column 0.?
+cell = landingMap[0][0]
+# Next, say the coordinates and what's there.?
+hero.say("row 0 column 0 " + cell)
+ 
+# Next cell is the 3rd row and the 2nd column.?
+hero.say("row 3 column 2 " + landingMap[3][2])
+ 
+# Now do it yourself for the next point:?
+hero.say("row 2 column 1 " + landingMap[2][1]);
+# The 1st row and 0th column.?
+hero.say("row 1 column 0 " + landingMap[1][0]);
+# The 0th row and 2nd column.?
+hero.say("row 0 column 2 " + landingMap[0][2]);
+# The 1st row and 3rd column.?
+hero.say("row 1 column 3 " + landingMap[1][3]);
+
+27. Snowdrops
+# We need to clear the forest of traps!?
+# The scout prepared a map of the forest.?
+# But be careful where you shoot! Don't start a fire.?
+ 
+# Get the map of the forest.?
+forestMap = hero.findNearest(hero.findFriends()).forestMap
+ 
+# The map is a 2D array where 0 is a trap.?
+# The first sure shot.?
+hero.say("Row " + 0 + " Column " + 1 + " Fire!")
+ 
+# But for the next points, check before shooting.?
+# There are an array of points to check.?
+cells = [{"row": 0, "col": 4}, {"row": 1, "col": 0}, {"row": 1, "col": 2}, {"row": 1, "col": 4},
+    {"row": 2, "col": 1}, {"row": 2, "col": 3}, {"row": 2, "col": 5}, {"row": 3, "col": 0},
+    {"row": 3, "col": 2}, {"row": 3, "col": 4}, {"row": 4, "col": 1}, {"row": 4, "col": 2},
+    {"row": 4, "col": 3}, {"row": 5, "col": 0}, {"row": 5, "col": 3}, {"row": 5, "col": 5},
+    {"row": 6, "col": 1}, {"row": 6, "col": 3}, {"row": 6, "col": 4}, {"row": 7, "col": 0}];
+ 
+for cell in cells:
+    row = cell["row"]
+    col = cell["col"]
+    # If row is less than forestMap length:
+    if row < len(forestMap):
+        # If col is less than forestMap[row] length:
+        if col < len(forestMap[row]):
+            # Now, we know the cell exists.
+            # If it is 0, say where to shoot:
+            if forestMap[row][col] == 0:
+                hero.say("Row " + row + " Column " + col + " Fire!")
+
+28. Reindeer Wakeup
+# This array contains the status for each reindeer.?
+deerStatus = [ 'asleep', 'asleep', 'asleep', 'asleep', 'asleep' ]
+ 
+# And this array contains our reindeer.?
+friends = hero.findFriends()
+ 
+# Loop through the reindeer and find the awake ones:?
+for deerIndex in range(len(friends)):
+    reindeer = friends[deerIndex]
+ 
+    # Reindeer with y position > 30 aren't in a pen.
+    # If so, set the reindeer's entry to "awake".
+    if reindeer.pos.y > 30:
+        deerStatus[deerIndex] = 'awake'
+ 
+# Loop through statuses and report to Merek.?
+for statusIndex in range(len(deerStatus)):
+    # Tell Merek the reindeer index and its status.
+    # Say something like "Reindeer 2 is asleep".
+    hero.say('Reindeer ' + statusIndex + ' is ' + deerStatus[statusIndex])
+
+29. Reindeer Spotter
+# This array contains each of the pen's positions.?
+penPositions = [ {'x':20,'y':24}, {'x':28,'y':24}, {'x':36,'y':24}, {'x':44,'y':24}, {'x':52,'y':24} ]
+ 
+# This array is used to track which reindeer is in it.?
+penOccupants = [ 'empty', 'empty', 'empty', 'empty', 'empty' ]
+ 
+# And this array contains our reindeer.?
+friends = hero.findFriends()
+ 
+# Figure out which reindeer are already in their pens.?
+for deerIndex in range(len(friends)):
+    reindeer = friends[deerIndex]
+ 
+    # Check each pen if it matches a reindeer's pos.
+    for penIndex in range(len(penPositions)):
+        penPos = penPositions[penIndex]
+ 
+        if penPos.x == reindeer.pos.x and penPos.y == reindeer.pos.y:
+            # Put the id in penOccupants at penIndex.
+            penOccupants[penIndex] = reindeer.id
+            # break out of the inner loop here.
+            break
+ 
+# Tell Merek what's in each pen.?
+for occIndex in range(len(penOccupants)):
+    # Tell Merek the pen index and the occupant.
+    # Say something like "Pen 3 is Dasher"
+    hero.say('Pen ' + occIndex + ' is ' + penOccupants[occIndex])
+
+30. Reindeer Tender
+# This is the array of pen positions?
+penPositions = [ {"x":20,"y":24}, {"x":28,"y":24}, {"x":36,"y":24}, {"x":44,"y":24}, {"x":52,"y":24} ]
+ 
+# Use this array to keep track of each pen's reindeer.?
+penOccupants = [ None, None, None, None, None, ]
+ 
+# And this array contains our reindeer.?
+friends = hero.findFriends()
+ 
+# Figure out which reindeer are already in their pens.?
+for deerIndex in range(len(friends)):
+    reindeer = friends[deerIndex]
+ 
+    # For each position check if it matches a reindeer.
+    for penIndex in range(len(penPositions)):
+        penPos = penPositions[penIndex]
+ 
+        if penPos.x == reindeer.pos.x and penPos.y == reindeer.pos.y:
+            # Put the reindeer in occupants at penIndex
+            penOccupants[penIndex] = reindeer
+            # Remove the reindeer from the friends array.
+            friends[deerIndex] = None
+            # break out of the inner loop here:
+            break
+ 
+# Assign the remaining reindeer to new positions.?
+for deerIndex in range(len(friends)):
+    # If the reindeer is null, use continue:
+    reindeer = friends[deerIndex]
+    if not reindeer:
+        continue
+ 
+    # Look for the first pen with nothing.
+    for occIndex in range(len(penOccupants)):
+        # If there is nothing, the pen is open:
+        if not penOccupants[occIndex]:
+            # Put the reindeer in the occupants array.
+            penOccupants[occIndex] = reindeer
+            # Command the reindeer to move to the pen.
+            hero.command(reindeer, 'move', penPositions[occIndex])
+            # break out early so we don't reassign:
+            break
+
+31. Ritual of Rectangling
+# We must summon the Ancient Warrior for this ogre!?
+# Four paladins must form a rectangle.?
+# But the rectangle needs a specific area and perimeter?
+# Paladins will keep moving, say the spell when ready.?
+# It is hard to be precise, but almost equal is good.?
+ 
+# This function should compare valueA and B within 3%.?
+def almostEqual(valueA, valueB):
+    # Check if valueA is > 0.97 and < 1.03 of valueB.
+    if valueA > 0.97 * valueB and valueA < 1.03 * valueB:
+        return True
+    # As a default, just check equality.
+    return valueA == valueB
+ 
+# This function should calculate the perimeter:?
+def perimeter(side1, side2):
+    # The perimeter is the sum of all four sides.
+    return side1 * 2 + side2 * 2
+ 
+ 
+# This function should calculate the perimeter:?
+def area(side1, side2):
+    # The area of a rectangle is the product of 2 sides
+    return side1 * side2
+ 
+ 
+# Required summoning values for area and perimeter:?
+requiredPerimeter = 104
+requiredArea = 660
+ 
+# We will use this unit as a base for our calculations:?
+base = hero.findNearest(hero.findFriends())
+ 
+while True:
+    sideSN = base.distanceTo("Femae")
+    sideWE = base.distanceTo("Illumina")
+    currentPerimeter = perimeter(sideSN, sideWE)
+    currentArea = area(sideSN, sideWE)
+    if almostEqual(currentArea, requiredArea) and almostEqual(currentPerimeter, requiredPerimeter):
+        hero.say("VENITE!")
+        break
+
+32. Square Shield
+# Incoming yeti attack!?
+# Use your paladins to form a square!?
+# Command Illumina and Vaelia to move to the corners of the square.?
+ 
+def findByName(name, thangs):
+    for i in range(len(thangs)):
+        thang = thangs[i]
+        if thang.id == name:
+            return thang
+    return None
+ 
+friends = hero.findFriends()
+celadia = findByName("Celadia", friends)
+dedalia = findByName("Dedalia", friends)
+sideLength = celadia.distanceTo(dedalia)
+ 
+# First find the remaining paladins and assign them to variables:?
+vaelia = findByName("Vaelia", friends)
+illumina = findByName("Illumina", friends)
+# Command both to move to the corners of the square.?
+# Remember squares have equal-length sides!?
+hero.command(vaelia, "move", {"x": celadia.pos.x, "y": celadia.pos.y - sideLength})
+hero.command(illumina, "move", {"x": celadia.pos.x + sideLength, "y": celadia.pos.y - sideLength})
+
+33. Bits And Trits
+# Incoming Ogre Brawlers!?
+# Make use of a Robot Walker to dispatch these enemies.?
+# The Robot Walker requires commands as strings.?
+# The first part will the enemy's health in ternary.?
+# The second part will be the enemy's type as binary.?
+ 
+def toTernary(number):
+    # Start with an empty string.
+    string = ""
+    # Then, while the number isn't zero:
+    while number != 0:
+        # We grab the remainder of our number.
+        remainder = number % 3
+        # This is our iterator method. 'number' decrements here.
+        number = (number - remainder) / 3
+        # Append the string to the remainder.
+        string = remainder + string
+    # Finally we want to return our constructed string.
+    return string
+    
+def toBinary(number):
+    string = ""
+    # Go through the steps again:
+        # Get remainder, decrement, and append string.
+    # Remember that binary is another way of saying '2'!
+    while number != 0:
+        remainder = number % 2
+        number = (number - remainder) / 2
+        string = remainder + string
+    return string
+ 
+while True:
+    enemies = hero.findEnemies()
+    dangerous = findMostDangerous(enemies)
+    if dangerous:
+        # The way the robot takes commands is in the form of:
+        # ternary(enemyHealth) + " " + binary(enemyType)
+        hero.say(toTernary(dangerous.health) + " " + toBinary(dangerous.type))
+ 
+# In this level the Ogre Brawlers are more powerful if they have more health.?
+def findMostDangerous(enemies):
+    mostDangerous = None
+    mostHealth = 0
+    for i in range(len(enemies)):
+        enemy = enemies[i]
+        if enemy.health > mostHealth:
+            mostDangerous = enemy
+            mostHealth = enemy.health
+    return mostDangerous
+
