@@ -1,0 +1,766 @@
+1. 尘埃
+# <%= ten_munchkins %>?
+ 
+attacks = 0
+while attacks < 10:
+    # <%= attackNearest %>
+    enemy = hero.findNearestEnemy()
+    if enemy:
+        hero.attack(enemy)
+    # <%= explainIncrement %>
+    # <%= incrementHits %>
+    attacks += 1
+ 
+# <%= retreat %>?
+hero.moveXY(79, 33)
+2. 复查
+# <%= kill_ogres %>?
+# <%= right_gold %>?
+ 
+# <%= count_ogres %>?
+defeatedOgres = 0
+ 
+# <%= while_killed %>?
+while defeatedOgres < 6:
+    enemy = hero.findNearestEnemy()
+    if enemy:
+        hero.attack(enemy)
+        defeatedOgres += 1
+    else:
+        hero.say("<%= ogres %>")
+ 
+# <%= move_right %>?
+hero.moveXY(49, 36)
+ 
+# <%= while_gold %>?
+while hero.gold < 30:
+    # <%= collect_coins %>
+    item = hero.findNearestItem()
+    if item:
+        hero.moveXY(item.pos.x, item.pos.y)
+ 
+# <%= move_exit %>?
+hero.moveXY(76, 32)
+
+3. 山谷的风与牛
+# <%= storm_coming %>?
+# <%= collect_while %>?
+ 
+# <%= var_yak %>?
+yak = hero.findNearestEnemy()
+ 
+# <%= while_yak %>?
+while yak:
+    item = hero.findNearestItem()
+    if item:
+        hero.moveXY(item.pos.x, item.pos.y)
+    # <%= update_yak %>
+    # <%= reassign_yak %>
+    yak = hero.findNearestEnemy()
+ 
+# <%= yak_hide %>?
+# <%= hide %>?
+hero.moveXY(38, 58)
+
+4. 先有付出 才有回报
+# <%= run_watch %>?
+ 
+# <%= while_health %>?
+while hero.health > 200: # Δ <%= change %>
+    hero.moveXY(48, 24)
+    hero.moveXY(16, 24)
+# <%= move_okar %>?
+hero.moveXY(32, 40);
+
+5. 沙漠战役
+# <%= while_loops %>?
+ 
+ordersGiven = 0
+while ordersGiven < 5:
+    # <%= give_orders %>
+    hero.moveXY(hero.pos.x, hero.pos.y - 10)
+    # <%= orders %>
+    # <%= nearby %>
+    hero.say("Attack!")
+    # <%= increment %>
+    ordersGiven += 1
+ 
+while True:
+    enemy = hero.findNearestEnemy()
+    # <%= join_attack %>
+    if enemy:
+        hero.attack(enemy)
+
+6. 钓鱼
+# <%= intro %>?
+ 
+# <%= collect_coins %>?
+while hero.gold < 25:
+    coin = hero.findNearest(hero.findItems())
+    if coin:
+        hero.moveXY(coin.pos.x, coin.pos.y)
+ 
+# <%= build_decoy %>?
+hero.buildXY("decoy", 71, 68)
+ 
+# <%= lure_ogres %>?
+while hero.health == hero.maxHealth:
+    hero.say("Ogres stink!")
+ 
+# <%= then_retreat %>?
+hero.moveXY(22, 15)
+
+
+7. Spinach Power
+# Collect exactly 7 spinach potions.?
+# Then you'll be strong enough to defeat the ogres.?
+ 
+potionCount = 0
+ 
+# Wrap the potion collection code inside a while loop.?
+# Use a condition to check the potionCount?
+while potionCount < 7:
+    item = hero.findNearestItem()
+    if item:
+        hero.moveXY(item.pos.x, item.pos.y)
+        potionCount += 1
+ 
+# When the while loop is finished,?
+# Go and fight!?
+while True:
+    enemy = hero.findNearestEnemy()
+    if enemy:
+        hero.attack(enemy)
+
+8. 团队合作
+# <%= hurry %>?
+ 
+# <%= find_items %>?
+items = hero.findItems()
+ 
+# <%= get_zero %>?
+# <%= index_remind %>?
+gem0 = items[0]
+ 
+# <%= bruno_take %>?
+hero.say("Bruno " + gem0)
+ 
+# <%= use_without %>?
+hero.say("Matilda " + items[1])
+ 
+# <%= assign_var %>?
+gem2 = items[2]
+ 
+# <%= take_it %>?
+hero.moveXY(gem2.pos.x, gem2.pos.y)
+
+9. Coordinated Defense
+# Protect the peasants from the ogres.?
+ 
+while True:
+    # Get an array of enemies.
+    enemies = hero.findEnemies()
+    # If the array is not empty.
+    if len(enemies) > 0:
+        # Attack the first enemy from "enemies" array.
+        hero.attack(enemies[0])
+        # Return to the start position.
+        hero.moveXY(40, 20)
+
+10. Recruiting Queue
+# Call peasants one after another.?
+ 
+# Neutral units are detected as enemies.?
+neutrals = hero.findEnemies()
+while True:
+    if len(neutrals):
+        # Say the first unit in the neutrals array
+        hero.say(neutrals[0])
+    else:
+        hero.say("Nobody here")
+    # Reassign the neutrals variable using findEnemies()
+    neutrals = hero.findEnemies()
+
+11. Second Gem
+# One gem is safe, the others are bombs.?
+# But you know the answer: always take the second.?
+ 
+while True:
+    items = hero.findItems()
+    # If the length of items is greater or equal to 2:
+    if len(items) >= 2:
+        # Move to the second item in items
+        hero.moveXY(items[1].pos.x, items[1].pos.y)
+    # Else:
+    else:
+        # Move to the center mark.
+        hero.moveXY(40, 34)
+
+12. Sarven 救世主
+# 一个数组(Array)就是物品的数列。?
+ 
+# 这个数组是一个朋友名字的数列。?
+friendNames = ['Joan', 'Ronan', 'Nikita', 'Augustus']
+ 
+# 数组从零开始计数，不是1！?
+friendIndex = 0
+ 
+# 循环该数组中的每一个名字?
+# 使用 len()方法来得到列表的长度。?
+while friendIndex < len(friendNames):
+    # 使用方括号来获得数组中的名字。
+    friendName = friendNames[friendIndex]
+ 
+    # 告诉你的朋友回家。
+    # 使用+来连接两个字符串。
+    hero.say(friendName + ', go home!')
+ 
+    # 增加索引来获取数组中的下一个名字
+    friendIndex += 1
+    
+# 回去建造栅栏让食人魔远离。?
+hero.moveXY(22, 30)
+hero.buildXY("fence", 30, 30)
+
+13. Bank Raid
+# <%= tasks %>?
+ 
+while True:
+    enemies = hero.findEnemies()
+    # <%= var_enemy %>
+    enemyIndex = 0
+    # <%= while_enemy_py %>
+    while enemyIndex < len(enemies):
+        # <%= get_enemy %>
+        enemy = enemies[enemyIndex]
+        hero.attack(enemy)
+        # <%= increase_index_enemy %>
+        enemyIndex += 1
+    coins = hero.findItems()
+    # <%= var_coin %>
+    coinIndex = 0
+    while coinIndex < len(coins):
+        # <%= get_coin %>
+        coin = coins[coinIndex]
+        # <%= collect_it %>
+        hero.moveXY(coin.pos.x, coin.pos.y)
+        # <%= increase_index_coin %>
+        coinIndex += 1
+
+14. 游魂
+# <%= tasks %>?
+ 
+while True:
+    enemies = hero.findEnemies()
+    enemyIndex = 0
+    while enemyIndex < len(enemies):
+        enemy = enemies[enemyIndex]
+        # <%= hit_while %>
+        while enemy.health > 0:
+            hero.attack(enemy)
+        enemyIndex += 1
+    items = hero.findItems()
+    itemIndex = 0
+    # <%= iterate_items %>
+    while itemIndex < len(items):
+        item = items[itemIndex]
+        # <%= while_dist %>        
+        while hero.distanceTo(item) > 2:
+            # <%= try_take %>
+            hero.moveXY(item.pos.x, item.pos.y)
+        # <%= increase_index_item %>
+        itemIndex += 1
+
+15. 潜伏
+# <%= find_enemies %>?
+# <%= attack_shamans %>?
+ 
+enemies = hero.findEnemies()
+enemyIndex = 0
+ 
+# <%= wrap_while %>?
+# <%= while_length %>?
+while enemyIndex < len(enemies):
+    enemy = enemies[enemyIndex]
+    if enemy.type == 'shaman':
+        while enemy.health > 0:
+            hero.attack(enemy)
+    # <%= increment %>
+    enemyIndex += 1
+
+16. 优待
+# 首先，在所有的敌人中循环...?
+ 
+enemies = hero.findEnemies()
+enemyIndex = 0
+# ...但是仅攻击 'thrower' 类型的敌人。?
+while enemyIndex < len(enemies):
+    enemy = enemies[enemyIndex]
+    if enemy and enemy.type == "thrower":
+        hero.attack(enemy)
+    enemyIndex += 1
+# 然后再到所有的敌人中循环...?
+enemies = hero.findEnemies()
+enemyIndex = 0
+# ...干掉仍然活着的每个?
+while enemyIndex < len(enemies):
+    enemy = enemies[enemyIndex]
+    if enemy:
+        hero.attack(enemy)
+    enemyIndex += 1
+
+17. Sarven 牧羊人
+# 使用 while 循环来对付食人魔。?
+ 
+while True:
+    enemies = hero.findEnemies()
+    enemyIndex = 0
+ 
+    # 将攻击逻辑放到 while 循环里来攻击所有的敌人。
+    # 3 enemies.length
+    while enemyIndex < len(enemies):
+        enemy = enemies[enemyIndex]
+        # "!=" 意思是 "不等于"
+        if enemy.type != "sand-yak":
+            # 当敌人的健康值大于0，攻击它！
+            while enemy.health > 0:
+                hero.attack(enemy)
+        enemyIndex += 1
+    # 在两波敌人之间，移动回中央。
+    hero.moveXY(40, 32)
+
+18. 捡闪亮东西的人
+# 很快的获取最多的金币?
+ 
+while True:
+    coins = hero.findItems()
+    coinIndex = 0
+    
+    # 把这个封装进循环里枚举所有的硬币
+    while coinIndex < len(coins):
+        coin = coins[coinIndex]
+        # 金币价值3点。
+        if coin.value == 3:
+            # 只捡金币。
+            hero.moveXY(coin.pos.x, coin.pos.y)
+        coinIndex += 1
+
+19. 掠夺者
+# 打几下泡泡人捡走掉出的币?
+ 
+while True:
+    coin = hero.findNearestItem()
+    # 当存在金币时：
+    while coin:
+        # 移动到金币处。
+        hero.moveXY(coin.pos.x, coin.pos.y)
+        # ‘coin’应该是最近的那枚 捡到手以后要另找一枚最近的
+        coin = hero.findNearest(hero.findItems())
+    enemy = hero.findNearest(hero.findEnemies())
+    if enemy:
+        # 如果敌人还会动
+        while enemy.health > 0:
+            # 就打它
+            hero.attack(enemy)
+
+20. 沙蛇
+# 这片区域布满了火焰陷阱。幸好我们之前派出了侦察员，他沿路在地上留下了宝石作为暗号，我们只需要顺着最近的宝石走就能躲过这些陷阱。?
+ 
+# 沙漠峡谷似乎会干扰你使用眼镜的findNearest技能！?
+# 你需要自己找到离你最近的宝石。?
+ 
+while True:
+    coins = hero.findItems()
+    coinIndex = 0
+    nearest = None
+    nearestDistance = 9999
+    
+    # 搜索所有的宝石，找到离你最近的那一颗。
+    while coinIndex < len(coins):
+        coin = coins[coinIndex]
+        coinIndex += 1
+        distance = hero.distanceTo(coin)
+        # 如果宝石与你的距离小于“最近距离（nearestDistance）”
+        if distance < nearestDistance:
+            # 设置该宝石为离你最近的宝石
+            nearest = coin
+            # 设置该距离为“最近距离（nearestDistance）”
+            nearestDistance = distance
+            
+    # 如果找到离你最近的宝石，移动英雄岛宝石的位置。你需要使用moveXY，不需要你抄近路，也不会踩到陷阱。
+    if nearest:
+        hero.moveXY(nearest.pos.x, nearest.pos.y)
+
+21. 奇数沙尘暴
+# 这个数组包含朋友和食人魔。?
+# 偶数元素是食人魔，奇数元素是伙伴。?
+everybody = ['Yetu', 'Tabitha', 'Rasha', 'Max', 'Yazul',  'Todd']
+enemyIndex = 0
+ 
+while enemyIndex < len(everybody):
+    # 使用方括号把食人魔的名字从数组中获取出来
+    enemy = everybody[enemyIndex]
+    # 使用变量传入食人魔的名字，攻击它们。
+    hero.attack(enemy)
+    # 每次递增2，来跳过朋友。
+    enemyIndex += 2
+ 
+# 在击败食人魔之后，向绿洲移动。?
+hero.moveXY(36, 53)
+
+22. 疯狂的 Maxer
+# 优先杀掉最远的敌人。?
+ 
+while True:
+    farthest = None
+    maxDistance = 0
+    enemyIndex = 0
+    enemies = hero.findEnemies()
+ 
+    # 查看全部敌人，找出最远的那个。
+    while enemyIndex < len(enemies):
+        target = enemies[enemyIndex]
+        enemyIndex += 1
+ 
+        # 是不是存在远得看不到的敌人？
+        distance = hero.distanceTo(target)
+        if distance > maxDistance:
+            maxDistance = distance
+            farthest = target
+ 
+    if farthest:
+        # 干掉最远的敌人！
+        # 如果敌人血量大于0就保持攻击。
+        while farthest.health > 0:
+            hero.attack(farthest)
+
+23. Brittle Morale
+# <%= one_shot %>?
+ 
+# <%= function_max_health %>?
+def findStrongestEnemy(enemies):
+    strongest = None
+    strongestHealth = 0
+    enemyIndex = 0
+    
+    # <%= iterate %>
+    while enemyIndex < len(enemies):
+        # <%= enemy %>
+        enemy = enemies[enemyIndex]
+        # <%= ifhealth %>
+        if enemy.health > strongestHealth:
+            # <%= strong %>
+            # <%= strongHealth %>
+            strongest = enemy
+            strongestHealth = enemy.health
+        # <%= increment %>
+        enemyIndex += 1
+    return strongest
+ 
+enemies = hero.findEnemies()
+leader = findStrongestEnemy(enemies)
+if leader:
+    hero.say(leader)
+
+24. 疯狂Maxer反击
+# 小一点的食人魔会造成更多的伤害！?
+# 优先攻击血少的敌人?
+while True:
+    weakest = None
+    leastHealth = 99999
+    enemyIndex = 0
+    enemies = hero.findEnemies()
+ 
+    # 循环检查所有敌人。
+    while enemyIndex < len(enemies):
+        enemy = enemies[enemyIndex]
+        enemyIndex += 1
+        # 如果当前对象的血量更少
+        if enemy.health < leastHealth:
+            # 标为最弱的，更新 leastHealth 变量
+            weakest = enemy
+            leastHealth = enemy.health
+ 
+    if weakest:
+        # 攻击最弱的食人魔。
+        hero.attack(weakest)
+
+25. Wishing Well
+# <%= gold_amount %>?
+ 
+less = "Nimis"
+more = "Non satis"
+requiredGold = 104
+ 
+# <%= func_sum %>?
+def sumCoinValues(coins):
+    coinIndex = 0
+    totalValue = 0
+    # <%= loop_through %>
+    while coinIndex < len(coins):
+        totalValue += coins[coinIndex].value
+        coinIndex += 1
+    return totalValue
+ 
+def collectAllCoins():
+    item = hero.findNearest(hero.findItems())
+    while item:
+        hero.moveXY(item.pos.x, item.pos.y)
+        item = hero.findNearest(hero.findItems())
+ 
+while True:
+    items = hero.findItems()
+    # <%= total_gold %>
+    goldAmount = sumCoinValues(items)
+    # <%= if_gold_here %>
+    if goldAmount != 0:
+        # <%= not_enough %>
+        # <%= say_not_enough %>
+        if goldAmount < requiredGold:
+            hero.say(more)
+        # <%= too_much %>
+        # <%= say_too_much %>
+        if goldAmount > requiredGold:
+            hero.say(less)
+        # <%= just_right %>
+        # <%= collect_gold %>
+        if goldAmount == requiredGold:
+            collectAllCoins()
+
+26. 峭壁追逐
+# 抓住 Pender Spellbane 去了解她的秘密。?
+ 
+while True:
+    # Pender是这里唯一的朋友，所以她总是在最近的位置。
+    pender = hero.findNearest(hero.findFriends())
+ 
+    if pender:
+        # moveXY()将移动到 Pender 在的位置，
+        # 但是她会向远离你的位置移动。
+        #hero.moveXY(pender.pos.x, pender.pos.y)
+        
+        # move()只一次移动一步。
+        # 所以你可以用它来追踪你的目标。
+        hero.move(pender.pos)
+
+27. 激流回旋
+# 使用对象枚举来走安全的路，并收集宝石。?
+# 在本关你不能够使用 moveXY()方法！使用 move()来移动?
+gems = hero.findItems()
+ 
+while hero.pos.x < 20:
+	# move()移动物体通过 x 和 y 的属性，不仅仅是数字。
+	hero.move({'x': 20, 'y': 35})
+ 
+while hero.pos.x < 25:
+	# 一个宝石的位置是一个对象，有 x 和 y 属性。
+	gem0 = gems[0]
+	hero.move(gem0.pos)
+ 
+# 当你的 x 小于30的时候，?
+# 使用物体移动到30，35位置?
+while hero.pos.x < 30:
+    hero.move({'x': 30, 'y': 35})
+ 
+# 当你的 x 小于35的时候?
+# 移动到宝石[1]的位置?
+while hero.pos.x < 35:
+    gem1 = gems[1]
+    hero.move(gem1.pos)
+ 
+# 拿到最后一对宝石！?
+while hero.pos.x < 40:
+    hero.move({'x': 40, 'y':35})
+ 
+while hero.pos.x < 45:
+    gem2 = gems[2]
+    hero.move(gem2.pos)
+ 
+while hero.pos.x < 50:
+    hero.move({'x': 50, 'y':35})
+ 
+while hero.pos.x < 55:
+    gem3 = gems[3]
+    hero.move(gem3.pos)
+
+28. 食人魔山谷挖宝
+# 一大群食人魔来之前你只有20秒时间！?
+# 尽可能去捡金币，然后你撤退到你栅栏后面的基地里！?
+while hero.time < 20:
+    # 收集金币
+    coin = hero.findNearest(hero.findItems())
+    hero.move(coin.pos)
+    
+    
+while hero.pos.x > 16:
+    # 撤退到栅栏后面
+    hero.move({"x": 15, "y": 38})
+    
+    
+# 建立栅栏挡住食人魔?
+hero.buildXY("fence", 20, 37)
+
+29. 安息之云指挥官
+# 召唤一些士兵，然后引导他们去你的基地。?
+ 
+# 每个士兵消耗20金币。?
+while hero.gold > hero.costOf("soldier"):
+    hero.summon("soldier")
+    
+soldiers = hero.findFriends()
+soldierIndex = 0
+# 添加一个while 循环来命令所有的士兵。?
+while soldierIndex < len(soldiers):
+    soldier = soldiers[soldierIndex]
+    hero.command(soldier, "move", {"x": 50, "y": 40})
+    soldierIndex += 1
+ 
+# 去加入你的朋友！?
+target = {"x": 48, "y": 40}
+while hero.distanceTo(target):
+    hero.move(target)
+
+30. 佣兵山
+# 收集金币招募士兵，指挥他们攻击敌人。?
+ 
+while True:
+    # 走到最近的金币处。
+    # 使用 move 取代 moveXY，以便于你可以不断发出命令。
+    coin = hero.findNearest(hero.findItems())
+    if coin:
+        hero.move(coin.pos)
+        
+    # 如果钱够了就招募士兵。
+    if hero.gold > hero.costOf("soldier"):
+        hero.summon("soldier")
+        
+    enemy = hero.findNearest(hero.findEnemies())
+    if enemy:
+        # 遍历你所有的士兵，命令他们攻击。
+        soldiers = hero.findFriends()
+        soldierIndex = 0
+        while soldierIndex < len(soldiers):
+            soldier = soldiers[soldierIndex]
+            soldierIndex += 1
+            
+            # 使用 attack 命令让你的士兵们攻击。
+            hero.command(soldier, "attack", enemy)
+
+31. 木材守卫
+while True:
+    # 收集金子
+    coin = hero.findNearest(hero.findItems())
+    if coin:
+        hero.move(coin.pos)
+    
+    # 如果你有足够的金币，召唤一个士兵。
+    if hero.gold >= hero.costOf("soldier"):
+        hero.summon("soldier")
+    
+    # 使用 for 循环来命令每个士兵。
+    # for 循环有两个部分『for X in Y』
+    # Y 是被循环的数组结构
+    #  Y 中的每个元素都会执行，X 会被设置称当前循环的个体
+    for friend in hero.findFriends():
+        if friend.type == "soldier":
+            enemy = friend.findNearestEnemy()
+            # 如果这有一个敌人，命令她攻击。
+            # 否则的话，移动她到地图的右边。
+            if enemy:
+                hero.command(friend, "attack", enemy)
+            else:
+                rightPos = {"x": 83, "y": 45}
+                hero.command(friend, "move", rightPos)
+
+32. 动物园管理员
+#护笼子。?
+# 放一个士兵在每一个 X 的位置?
+points = []
+points[0] = {"x": 33, "y": 42}
+points[1] = {"x": 47, "y": 42}
+points[2] = {"x": 33, "y": 26}
+points[3] = {"x": 47, "y": 26}
+ 
+# 1.收集80金币。?
+while hero.gold < 80:
+    coin = hero.findNearest(hero.findItems())
+    if coin:
+        hero.move(coin.pos)
+ 
+# 2.建造4个士兵。?
+for i in range(4):
+    hero.summon("soldier")
+    
+# 3.派你的士兵到特定的位置上。?
+while True:
+    friends = hero.findFriends()
+    for j in range(len(friends)):
+        point = points[j]
+        friend = friends[j]
+        enemy = friend.findNearestEnemy()
+        if enemy and enemy.team == "ogres" and friend.distanceTo(enemy) < 5:
+            # 命令友方攻击。
+            hero.command(friend, "attack", enemy)
+            
+        else:
+            # 命令的朋友移动到特定点上。
+            hero.command(friend, "move", point)
+
+33. 战略祭品
+# 收集80金币?
+while hero.gold < 80:
+    coin = hero.findNearest(hero.findItems())
+    if coin:
+        hero.move(coin.pos)
+ 
+# 建造4个士兵用来做诱饵?
+for i in range(4):
+    hero.summon("soldier")
+ 
+# 派你的士兵到指定位置。?
+points = []
+points[0] = { "x": 13, "y": 73 }
+points[1] = { "x": 51, "y": 73 }
+points[2] = { "x": 51, "y": 53 }
+points[3] = { "x": 90, "y": 52 }
+friends = hero.findFriends()
+ 
+# 使用范围来在数组中循环?
+# 让friends去指定地点，命令他们移动?
+for j in range(len(friends)):
+    point = points[j]
+    friend = friends[j]
+    hero.command(friend, "move", point)
+
+34. 狩猎派对
+# 命令你的部队向东移动，攻击任何看到的食人魔。?
+# 使用 for 循环和 findFriends方法。?
+# 你能在你的士兵上使用findNearestEnemy()来获取他们的而不是你的最近的敌人。?
+while True:
+    friends = hero.findFriends()
+    for friend in friends:
+        enemy = friend.findNearestEnemy()
+        if enemy:
+            hero.command(friend, "attack", enemy)
+        else:
+            moveTo = {"x": friend.pos.x + 0.35, "y": friend.pos.y}
+            hero.command(friend, "move", moveTo)
+
+35. 借刀
+# 你的英雄不需要在本关参与战斗。?
+# 命令你的弓箭手集中在火攻敌人。?
+while True:
+    toughest = None
+    mostHealth = 0
+    enemies = hero.findEnemies()
+    for enemy in enemies:
+        if enemy.health > mostHealth:
+            toughest = enemy
+            mostHealth = enemy.health
+ 
+    if toughest:
+        friends = hero.findFriends()
+        for friend in friends:
+            hero.command(friend, "attack", toughest)
+
+36. Summation Summit

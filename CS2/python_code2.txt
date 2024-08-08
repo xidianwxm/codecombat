@@ -1,0 +1,682 @@
+
+22. 跃火林中
+# 在这关，别碰恶魔石！往其他方向移动避开它们！
+while True:
+    evilstone = hero.findNearestItem()
+    if evilstone:
+        pos = evilstone.pos
+        if pos.x == 34:
+            # 如果恶魔石在左边，走到右边。
+            hero.moveXY(46, 22)
+        else:
+            # 如果恶魔石在右边，走到左边。
+            hero.moveXY(34, 22)
+    else:
+        # 如果没有恶魔石，那就去到中间。
+        hero.moveXY(40, 22)
+
+23.以静制动
+
+while True:
+    enemy = hero.findNearestEnemy()
+    # 如果有敌人出现，那么就...
+    if enemy:
+        # 使用distanceTo创建一个距离变量
+        distance = hero.distanceTo(enemy)
+        # 如果敌人与你的距离小于5米，那么就攻击它
+        if distance < 5:
+            hero.attack(enemy)
+        # 否则（这名敌人还离得很远），就使用shield
+        else:
+            hero.shield()
+    # 否则（没有敌人）...
+    else:
+        # …那么，回到X位置。
+        hero.moveXY(40, 34)
+24. Agrippa守卫战
+while True:
+    enemy = hero.findNearestEnemy()
+    if enemy:
+        # 用 distanceTo 获取与敌人的距离。
+        distance = hero.distanceTo(enemy)
+        # 如果距离小于5米...
+        if distance < 5:
+            # ...如果 “cleave”技能准备好了，就用“cleave”干掉他们！
+            if hero.isReady("cleave"):
+                hero.cleave(enemy)
+            # ...否则，仅仅进行普通攻击。
+            else:
+                hero.attack(enemy)
+
+24a. Agrippa守卫战 A
+while True:
+    enemy = hero.findNearestEnemy()
+    if enemy:
+        # 用 distanceTo 获取与敌人的距离。
+        distance = hero.distanceTo(enemy)
+        # 如果距离小于5米...
+        if distance < 5:
+            # ...如果 “cleave”技能准备好了，就用“cleave”干掉他们！
+            if hero.isReady("cleave"):
+                hero.cleave(enemy)
+            # ...否则，仅仅进行普通攻击。
+            else:
+                hero.attack(enemy)
+24b. Agrippa守卫战 B
+while True:
+    enemy = hero.findNearestEnemy()
+    if enemy:
+        # 用 distanceTo 获取与敌人的距离。
+        distance = hero.distanceTo(enemy)
+        # 如果距离小于5米...
+        if distance < 5:
+            # ...如果 “cleave”技能准备好了，就用“cleave”干掉他们！
+            if hero.isReady("cleave"):
+                hero.cleave(enemy)
+            # ...否则，仅仅进行普通攻击。
+            else:
+                hero.attack(enemy)
+25. 乡村漫游者
+# 这定义了findAndAttackEnemy函数
+def findAndAttackEnemy():
+    enemy = hero.findNearestEnemy()
+    if enemy:
+        hero.attack(enemy)
+
+
+# 这段代码不是函数的一部分。
+while True:
+    # 现在你可以使用findAndAttackEnemy在村子里巡逻
+    hero.moveXY(35, 34)
+    findAndAttackEnemy()
+    
+    # 现在移动到右侧入口。
+    hero.moveXY(60, 31)
+    # 使用findAndAttackEnemy
+    findAndAttackEnemy()
+26. 村庄守卫
+# 这个函数攻击最近的敌人。
+def findAndAttackEnemy():
+    enemy = hero.findNearestEnemy()
+    if enemy:
+        hero.attack(enemy)
+
+
+def findAndCleaveEnemy():
+    # 定义一个函数来劈斩敌人（只在劈斩就绪时）
+    enemy = hero.findNearestEnemy()
+    if enemy:
+        if hero.isReady('cleave'):
+            hero.cleave(enemy)
+
+
+# 在主循环中，巡逻、劈斩和攻击。
+while True:
+    # 移动到巡逻点，劈斩并攻击。
+    hero.moveXY(35, 34)
+    findAndCleaveEnemy()
+    findAndAttackEnemy()
+    
+    # 移动到另一点：
+    hero.moveXY(60, 31)
+    findAndCleaveEnemy()
+    findAndAttackEnemy()
+27. 村庄守护神
+# 定义你自己的函数来对抗敌人！
+# 在函数中找到敌人，然后劈斩或是攻击它。
+def cleaveOrAttack():
+    enemy = hero.findNearestEnemy()
+    if enemy:
+        if hero.isReady('cleave'):
+            hero.cleave(enemy)
+        else:
+            hero.attack(enemy)
+
+
+# 在巡逻点之间移动并调用函数。
+while True:
+    hero.moveXY(35, 34)
+    # 使用上面定义的cleaveOrAttack函数。
+    cleaveOrAttack()
+
+
+    hero.moveXY(47, 27)
+    # 再次调用函数。
+    cleaveOrAttack()
+
+
+    hero.moveXY(60, 31)
+    # 再次调用函数。
+    cleaveOrAttack()
+28. 造币厂
+# 差役试图偷取金币
+# 编写一个函数，在差役盗取金币前将其干掉
+
+
+def pickUpCoin():
+    coin = hero.findNearestItem()
+    if coin:
+        hero.moveXY(coin.pos.x, coin.pos.y)
+
+
+# 在下方写一个攻击敌人的函数attackEnemy。
+# 寻找最近的敌人，如果出现敌人就进行攻击
+def attackEnemy():
+    enemy = hero.findNearestEnemy()
+    if enemy:
+        hero.attack(enemy)
+
+
+while True:
+    attackEnemy() # ? 在写好 attackEnemy 函数后消除这里的注释。
+    pickUpCoin()
+29. 边地之叉
+# 一大波食人魔正在到来！
+# 使用 checkAndAttack 函数让代码易读。
+
+
+# 这个函数有一个参数。
+# 参数是一种给函数传递信息的方式。
+def checkAndAttack(target):
+    # target参数只是一个变量！
+    # 它包含了函数调用时的参数。
+    if target:
+        hero.attack(target)
+    hero.moveXY(43, 34)
+
+
+while True:
+    hero.moveXY(58, 52)
+    topEnemy = hero.findNearestEnemy()
+    checkAndAttack(topEnemy)
+    
+    # 移动到底部的X标记处。
+    hero.moveXY(58, 16)
+    # 创建名为 bottomEnemy 的变量，寻找最近敌人。
+    bottomEnemy = hero.findNearestEnemy()
+    # 使用 checkAndAttack 函数，并使用 bottomEnemy 变量。
+    checkAndAttack(bottomEnemy)
+30. 盗墓者
+# 森林中一座被遗忘的墓地！
+# 但是食人魔紧追不舍。
+# 在防御矮人的同时破开坟墓
+
+
+# 这个函数应该在敌人存在时攻击，否则攻击门！
+def checkToDefend(target):
+    # 检查目标是否存在
+    if target:
+        # 如果是这样，攻击目标。
+        hero.attack(target)
+    # 如果没有目标，使用else去做点别的事
+    else:
+        # 否则攻击 "Door"
+        hero.attack("Door")
+
+
+while True:
+    enemy = hero.findNearestEnemy()
+    checkToDefend(enemy)
+31. 墓地阴魂
+# 唯一的出口被食人魔堵住了。
+# 躲着骷髅怪，并一个个击败食人魔
+
+
+# 这个函数需要攻击敌人并隐藏。
+def hitOrHide(target):
+    # 如果'目标'存在：
+    if target:
+        # 攻击'目标'
+        hero.attack(target)
+        # 然后移动到红色标记。
+        hero.moveXY(32, 17)
+
+
+while True:
+    enemy = hero.findNearestEnemy()
+    hitOrHide(enemy)
+32. 捉迷藏
+# 收集4个发光石，用来打败食人魔斗士。
+# 如果发现发光石的话，藏起来。
+
+
+def checkTakeHide(item):
+    if item:
+        # 物品在此，拿着它。
+        hero.moveXY(item.pos.x, item.pos.y)
+        # 然后移动到营地中央(40, 34)
+        hero.moveXY(40, 34)
+
+
+while True:
+    # 移动到右上的X标记。
+    hero.moveXY(68, 56)
+    # 在那里搜索一块发光石。
+    lightstone = hero.findNearestItem()
+    # 调用checkTakeHide，并使用参数：lightstone
+    checkTakeHide(lightstone)
+    
+    # 移动到左上角的标记。
+    hero.moveXY(12, 56)
+    # 搜索发光石。
+    lightstone = hero.findNearestItem()
+    # 调用checkTakeHide函数。
+    # 将搜索的结果作为参数传入。
+    checkTakeHide(lightstone)
+33. 森林矿工
+# 检查工人们是否能安全通过雷区。
+
+
+def checkEnemyOrSafe(target):
+    # 如果目标（参数）存在：
+    if target:
+        # 然后攻击目标
+        hero.attack(target)
+    # 否则：
+    else:
+        # 使用say()来叫农民。
+        hero.say("All clear!")
+
+
+while True:
+    # 移动到并检查右上的X标记。
+    hero.moveXY(64, 54)
+    enemy1 = hero.findNearestEnemy()
+    checkEnemyOrSafe(enemy1)
+    
+    # 移动到左下的X标记处。
+    hero.moveXY(16, 14)
+    # 将findNearestEnemy()的结果存到一个变量中。
+    enemy2 = hero.findNearestEnemy()
+    # 调用checkEnemyOrSafe，并传递
+    # findNearestEnemy的结果作为参数
+    checkEnemyOrSafe(enemy2)
+34. 交给劈斩者
+# 这里展示了如何定义一个叫作cleaveWhenClose的函数
+# 函数定义了一个参数，名为target
+def cleaveWhenClose(target):
+    if hero.distanceTo(target) < 5:
+        # 将你的攻击代码放到这里。
+        # 如果cleave准备就绪，那就劈斩目标
+        if hero.isReady("cleave"):
+            hero.cleave()
+        # 否则，使用attack攻击目标！
+        else:
+            hero.attack(target)
+
+
+# 这段代码不是函数的一部分。
+while True:
+    enemy = hero.findNearestEnemy()
+    if enemy:
+        # 注意在cleaveWhenClose内部，我们用target指向敌人。
+        cleaveWhenClose(enemy)
+35. Timberland Trap
+# Define a function that accepts a parameter.
+# Defeat munchkins, ignore throwers.
+
+
+def cleaveWhenClose(target):
+    if hero.distanceTo(target) < 5:
+        if hero.isReady("cleave"):
+            hero.cleave(target)
+        else:
+            hero.attack(target)
+
+
+while True:
+    enemy = hero.findNearestEnemy()
+    if enemy:
+        cleaveWhenClose(enemy)
+36. 返回荆棘农场
+# 这个函数 “maybeBuildTrap” 定义了两个参数
+def maybeBuildTrap(x, y):
+    # 使用x和y作为移动的坐标。
+    hero.moveXY(x, y)
+    enemy = hero.findNearestEnemy()
+    if enemy:
+        # 使用 buildXY 在特定 x 和 y 处建造 "fire-trap".
+        hero.buildXY("fire-trap", x, y)
+        
+while True:
+    # 这会调用 maybeBuildTrap，并使用上方入口的坐标。
+    maybeBuildTrap(43, 50)
+    
+    # 下面在左侧入口使用maybeBuildTrap！
+    maybeBuildTrap(25, 34)
+
+
+    # 在底部入口处使用“maybeBuildTrap” ！
+    maybeBuildTrap(43, 20)
+36a. 返回荆棘农场 A
+# 函数maybeBuildTrap定义了两个参数！
+def maybeBuildTrap(x, y):
+    # 使用x和y作为移动的坐标。
+    hero.moveXY(x, y)
+    enemy = hero.findNearestEnemy()
+    if enemy:
+        # 使用buildXY在指定xy坐标处建造一个"fire-trap"
+        hero.buildXY("fire-trap", x, y)
+        
+while True:
+    # 这会调用maybeBuildTrap，使用左侧入口的坐标。
+    maybeBuildTrap(20, 34)
+    
+    # 下面在下方入口处使用maybeBuildTrap！
+    maybeBuildTrap(38, 20)
+
+
+    # 下面在右侧入口使用maybeBuildTrap！
+    maybeBuildTrap(56, 34)
+36b. 返回荆棘农场 B
+ #函数maybeBuildTrap定义了两个参数！
+def maybeBuildTrap(x, y):
+    # 使用x和y作为移动的坐标。
+    hero.moveXY(x, y)
+    enemy = hero.findNearestEnemy()
+    if enemy:
+        # 使用buildXY在指定xy坐标处建造一个"fire-trap"
+        hero.buildXY("fire-trap", x, y)
+        
+while True:
+    # 这会调用maybeBuildTrap，使用下方入口的坐标。
+    maybeBuildTrap(38, 20)
+    
+    # 下面在右侧入口使用maybeBuildTrap！
+    maybeBuildTrap(56, 34)
+
+
+    # 现在在上方入口处使用maybeBuildTrap！
+    maybeBuildTrap(38, 48)
+37. Agrippa 重构
+def cleaveOrAttack(enemy):
+    # 如果 “cleave” 技能冷却完毕，那就使用它！否则，使用普通攻击。
+    if hero.isReady("cleave"):
+        hero.cleave(enemy)
+    else:
+        hero.attack(enemy)
+
+
+while True:
+    enemy = hero.findNearestEnemy()
+    if enemy:
+        distance = hero.distanceTo(enemy)
+        if distance < 5:
+            # 调用上面定义的 “cleaveOrAttack” 函数
+            cleaveOrAttack(enemy)
+38. 封闭的十字路口
+# 只在看到敌人时进行建造。
+
+
+# 该函数定义3个参数。
+def maybeBuildSomething(buildType, x, y):
+    # 移动到参数为X 和 Y的位置
+    hero.moveXY(x, y)
+    # 找到最近的敌人
+    enemy = hero.findNearestEnemy()
+    # 如果存在敌人
+    if enemy:
+        # 那么使用buildXY，参数buildType, x, 和 y
+        hero.buildXY(buildType, x, y)
+
+
+while True:
+    # 调用 maybeBuildSomething，使用"fire-trap"及底部X的坐标。
+    maybeBuildSomething("fire-trap", 40, 20)
+    # 调用maybeBuildSomething，在左侧X处使用"fence"!
+    maybeBuildSomething("fence", 26, 34)
+    # 调用maybeBuildSomething，在顶部的X处使用"fire-trap"!
+    maybeBuildSomething("fire-trap", 40, 50)
+    # 调用maybeBuildSomething，在右侧X处使用"fence"!
+    maybeBuildSomething("fence", 54, 34)
+39. 贪婪的陷阱
+# 巡逻并只在看到金币时设置陷阱。
+
+
+# 编写这个函数
+def maybeBuildTrap(x, y):
+    # 移动到给定的xy位置
+    hero.moveXY(x, y)
+    # 搜寻一枚硬币，如果找到就建造一个"fire-trap"
+    coin = hero.findNearestItem()
+    if coin:
+        hero.buildXY("fire-trap", x, y)
+
+
+
+
+while True:
+    # 为左上方通道调用maybeBuildTrap
+    maybeBuildTrap(12, 56)
+    # 下面是右上角的通道。
+    maybeBuildTrap(68, 56)
+    # 下面是右下的通道。
+    maybeBuildTrap(68, 12)
+    # 下面是左下角的通道。
+    maybeBuildTrap(12, 12)
+40. 边地好伙伴
+# 你现在拥有一个宠物！
+
+
+def speak(event):
+    # 你的宠物需要用pet.say()进行回应
+    pet.say("Meow!")
+
+
+# 这将告诉你的宠物，在听到声音时运行speak()函数
+pet.on("hear", speak)
+
+
+# 和你的宠物交谈！
+hero.say("Hello Kitty")
+40a. 好伙伴的名字A
+# 农民想知道宠物的名字。
+
+
+# 使用这个函数作为"hear"事件的处理函数。
+def sayName(event):
+    # 宠物会在函数调用时按顺序说这些。
+    pet.say("我名叫狂兽。")
+    pet.say("不过我的朋友们叫我毛球。")
+    
+# 使用pet.on("eventName", functionName)来添加事件监听函数给宠物
+# 在这里使用"hear" sayName及pet.on()
+pet.on("hear", sayName)
+
+
+# 你这次不需要说任何东西！
+# 农民会进行交谈。
+40b. 好伙伴的名字 B
+# 宠物需要向英雄和农民问好。
+
+
+# 使用这个函数作为"hear"事件的处理函数:
+def sayHello(event):
+    # 宠物在说你好：
+    pet.say("Hi-meaw")
+
+
+# 使用宠物的.on("eventType", functionName)方法.
+# 这一关里，宠物需要在听到声音后运行sayHello
+pet.on("hear", sayHello)
+
+
+# 那么，问候宠物，等待回应。
+hero.say("Hello, kitty!")
+41. 好伙伴的名字
+# 我们需要知道新宠物的名字。
+
+
+# 把这个函数用作宠物 "hear" 事件的处理函数。
+def onHear(event):
+    # 不要更改这个函数
+    pet.say("喵呜~ 汪 喵呜~")
+    pet.say("汪 汪")
+    pet.say("喵呜~")
+    pet.say("喵呜~")
+    pet.say("喵呜~ 汪 喵呜~ 喵呜~")
+
+
+# 使用 “the pet.on(eventType，eventHandler) 方法”
+# 指派onHear函数来处理"hear"事件。
+
+
+
+
+# 这必须在 "pet.on" 的后面。
+hero.say("伙计，你叫什么名字？")
+hero.say("能重复一次吗？")
+42. 博士猫咪
+# 教你的宠物回答问题！
+
+
+# 很幸运，所有的答案都是"2"
+def sayTwo(event):
+    # 使用pet.say()来回答"2"
+    
+    pass
+
+
+# 使用pet:on()，通过sayTwo来处理"hear"事件
+
+
+# 现在休息并观看表演吧！
+hero.say("一加一等于…？")
+hero.say("x^3 - 6x^2 + 12x - 8 = 0. x等于多少？")
+hero.say("火星有多少卫星？")
+43. 宠物小测试
+# 编写一个事件处理函数，名为onHear
+
+
+# 完成onHear函数
+def onHear(e):
+    # 宠物需要在onHear中说点什么。
+    pet.say("Myau")
+
+
+pet.on("hear", onHear)
+
+
+hero.say("能听懂我的话吗？")
+hero.say("你是美洲狮吗？")
+hero.say("你多大啦？")
+# 再问两个问题。
+hero.say("你会数学吗？")
+hero.say("你想不想到大学深造？")
+44. 去拿取
+# 你被困在了陷阱中！
+# 派遣宠物拿取治疗药水！
+
+
+def goFetch():
+    # 你可以在处理函数中使用循环。
+    while True:
+        potion = hero.findNearestItem()
+        if potion:
+            # 用 “pet.fetch()” 去让你的宠物捡药水：
+            pet.fetch(potion)
+
+
+# 当宠物被召唤出来时，会触发 "spawn" 事件。
+# 这让你的宠物在关卡开始时运行 goFetch()函数。
+pet.on("spawn", goFetch)
+45. 看门狗
+
+
+def onSpawn(event):
+    while True:
+        # 宠物一样可以发现敌人。
+        enemy = pet.findNearestEnemy()
+        # 如果有敌人：
+        if enemy:
+            # 然后让宠物说点什么：
+            pet.say("Woof!")
+    
+
+
+pet.on("spawn", onSpawn);
+46. 漫漫长路
+ 移动到右边
+
+
+# 补全这个函数：
+def onSpawn(event):
+    # 在 while-true 循环里：
+    while True:
+        # 使用hero.findNearestItem()
+        item = hero.findNearestItem()
+        # 如果有物品：
+        if item:
+            # 使用pet.fetch(item)来拿取物品。
+            pet.fetch(item)
+
+
+# 使用pet.on()来将onSpawn指派给"spawn"事件
+pet.on("spawn", onSpawn)
+hero.moveXY(78, 35)
+47. 森林慢跑
+
+
+def onSpawn(event):
+    while True:
+        # 首先，移动到左侧X标记处：
+        pet.moveXY(9, 24)
+        # 接着，移动到上面的X标记。
+        pet.moveXY(30, 43)
+        # 将宠物移动至右侧的X标记处：
+        pet.moveXY(51, 24)
+        # 将你的宠物移动到下面的X标记处：
+        pet.moveXY(30, 5)
+
+
+# 使用pet.on()，通过onSpawn来处理"spawn"事件
+pet.on("spawn", onSpawn)
+
+
+# 激励你的宠物！
+# 不要移除下方的命令。
+while True:
+    hero.say("狗狗真棒！")
+    hero.say("你能做到的！")
+    hero.say("跑跑跑！")
+    hero.say("快好了！")
+    hero.say("再来一圈！")
+48. 森林加农炮之舞
+# 你的宠物应该在X标记上来回跑动
+# 英雄需要时刻保持兴奋！
+
+
+# 为宠物编写事件函数onSpawn
+# 这个函数要让狼来回跑动：
+# 首先，跑到右侧的标记上，然后左侧的标记：
+def onSpawn(event):
+    while True:
+        pet.moveXY(12, 8)
+        pet.moveXY(48, 8)
+
+
+pet.on("spawn", onSpawn)
+# 鼓舞你的宠物。不要移除这个：
+while True:
+    hero.say("跑！！！")
+    hero.say("速度！")
+49. Power Peak
+def petLogic():
+    # Add code to use your pet!
+    # Move them to the power discs at the top of the map for powerups.
+    pet.moveXY(66, 74)
+ 
+pet.on('spawn', petLogic)
+while True:
+    # Improve your hero's default code!
+    # Move to the nearby power discs to spawn units to help or attack!
+    
+    enemy = hero.findNearestEnemy()
+    if enemy:
+        if hero.isReady("cleave"):
+            hero.cleave(enemy)
+        else:
+            hero.attack(enemy)
+    else:
+        hero.moveXY(38, 31)
+
